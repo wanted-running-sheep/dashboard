@@ -1,8 +1,7 @@
 import { useState } from 'react';
-import { reportRequest } from '@/modules/services';
+import { apiRequest } from '@/api/instance';
 import { AxiosResponse } from 'axios';
 import { ReportProps } from 'request';
-
 export const useReportModel = () => {
   const [reports, setReports] = useState<ReportProps[]>([]);
 
@@ -13,7 +12,7 @@ export const useReportModel = () => {
   };
 
   const getReports = async () => {
-    const response = await reportRequest.get('');
+    const response = await apiRequest.get('/report');
     updateMovies(response);
   };
 

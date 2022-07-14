@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { AdvertisementProps } from 'request';
-import { advertisementRequest } from '../services';
+import { apiRequest } from '@/api/instance';
 import { AxiosResponse } from 'axios';
 
 export const useAdvertisementModel = () => {
@@ -14,7 +14,7 @@ export const useAdvertisementModel = () => {
     }
   };
   const getAdvertisements = async () => {
-    const response = await advertisementRequest.get('');
+    const response = await apiRequest.get('/advertisements');
     updateAdvertisements(response);
   };
 

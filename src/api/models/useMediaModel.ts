@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { mediaRequest } from '../services';
+import { apiRequest } from '@/api/instance';
 import { AxiosResponse } from 'axios';
 import { MediaProps } from 'request';
 
@@ -13,7 +13,7 @@ export const useMediaModel = () => {
   };
 
   const getMedia = async () => {
-    const response = await mediaRequest.get('');
+    const response = await apiRequest.get('/media');
     updateMedia(response);
   };
 

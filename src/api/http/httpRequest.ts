@@ -1,4 +1,5 @@
 import { AxiosInstance } from 'axios';
+import { ApiUrlType } from 'request';
 
 export class HttpRequest {
   private service: AxiosInstance;
@@ -7,7 +8,7 @@ export class HttpRequest {
     this.service = service;
   }
 
-  get(url: string = '') {
+  get(url: ApiUrlType) {
     return this.service.get(url).catch((error) => {
       console.log('error: ', error);
     });

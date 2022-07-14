@@ -1,10 +1,26 @@
 declare module 'request' {
+  type ApiUrlType = '/media' | '/advertisements' | '/report';
+  interface ReportProps {
+    imp: number;
+    click: number;
+    cost: number;
+    conv: number;
+    convValue: number;
+    ctr: number;
+    cvr: number;
+    cpc: number;
+    cpa: number;
+    roas: number;
+    date: string;
+  }
+
   interface AdvertisementReportInterface {
     const: number;
     convValue: number;
     roas: number;
   }
 
+  //
   interface AdvertisementProps {
     id: number;
     adType: string;
@@ -28,19 +44,5 @@ declare module 'request' {
     cpc: number;
     cpa: number;
     roas: number;
-  }
-
-  interface ReportProps {
-    imp: number;
-    click: number;
-    cost: number;
-    conv: number;
-    convValue: number;
-    ctr: number;
-    cvr: number;
-    cpc: number;
-    cpa: number;
-    roas: number;
-    date: string;
   }
 }
