@@ -1,7 +1,12 @@
 import React from 'react';
+import Layout from '@/components/Layout';
 
 const ManagementPage = () => {
-  return <div>ManagementPage</div>;
+  return (
+    <Layout>
+      <h1>ManagementPage</h1>
+    </Layout>
+  );
 };
 
 export default ManagementPage;
