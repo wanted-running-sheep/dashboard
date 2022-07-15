@@ -10,8 +10,8 @@ const Router = () => {
         <Route path="/" element={<Navigate replace to="/dashboard" />} />
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/management" element={<ManagementPage />} />
+        <Route path="*" element={<Navigate replace to="/dashboard" />} />
       </Route>
-      <Route path="/drawerTest" element={<DrawerTest />} />
     </Routes>
   );
 };
