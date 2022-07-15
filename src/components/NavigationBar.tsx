@@ -16,7 +16,7 @@ interface NavigationBarProps {
   isOpened: boolean;
 }
 
-const iconWidth = 20;
+const ICON_WIDTH = 20;
 const NavigationBar = ({ isOpened }: NavigationBarProps) => {
   const navigate = useNavigate();
   const navigationItems = [
@@ -39,7 +39,7 @@ const NavigationBar = ({ isOpened }: NavigationBarProps) => {
           return (
             <ListItem key={title}>
               <MenuButton onClick={onClickMenu}>
-                <Icon width={iconWidth} />
+                <Icon width={ICON_WIDTH} />
                 <MenuName primary={title} />
               </MenuButton>
             </ListItem>

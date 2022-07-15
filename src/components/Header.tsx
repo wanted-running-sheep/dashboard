@@ -20,7 +20,7 @@ const Header = ({ toggleDrawer }: HeaderProps) => {
   const [isAnchor, setIsAnchor] = useState(false);
 
   const handleAnchorMenu = () => {
-    setIsAnchor(!isAnchor);
+    setIsAnchor((previewAnchor) => !previewAnchor);
   };
 
   return (
