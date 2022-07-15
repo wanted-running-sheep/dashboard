@@ -1,6 +1,6 @@
 declare module 'request' {
   type ApiUrlType = '/media' | '/advertisements' | '/report';
-  interface ReportProps {
+  interface ReportInterface {
     imp: number;
     click: number;
     cost: number;
@@ -12,6 +12,8 @@ declare module 'request' {
     cpa: number;
     roas: number;
     date: string;
+    yearMonthDate: string;
+    monthDate: string;
   }
 
   interface AdvertisementReportInterface {
@@ -21,7 +23,7 @@ declare module 'request' {
   }
 
   //
-  interface AdvertisementProps {
+  interface AdvertisementInterface {
     id: number;
     adType: string;
     title: string;
@@ -32,9 +34,11 @@ declare module 'request' {
     report: AdvertisementReportInterface;
   }
 
-  interface MediaProps {
+  interface MediaInterface {
     channel: string;
     date: string;
+
+    monthDate: string;
     imp: number;
     click: number;
     cost: number;
@@ -44,5 +48,10 @@ declare module 'request' {
     cpc: number;
     cpa: number;
     roas: number;
+  }
+
+  interface TotalDataManagementInterface {
+    reports: ReportInterface[];
+    media: MediaInterface[];
   }
 }

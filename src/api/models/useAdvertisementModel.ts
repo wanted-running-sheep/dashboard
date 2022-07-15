@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import { AdvertisementProps } from 'request';
+import { AdvertisementInterface } from 'request';
 import { apiRequest } from '@/api/instance';
 import { AxiosResponse } from 'axios';
 
 export const useAdvertisementModel = () => {
-  const [advertisements, setAdvertisements] = useState<AdvertisementProps[]>(
-    []
-  );
+  const [advertisements, setAdvertisements] = useState<
+    AdvertisementInterface[]
+  >([]);
 
   const updateAdvertisements = (response: AxiosResponse | void) => {
     if (response) {

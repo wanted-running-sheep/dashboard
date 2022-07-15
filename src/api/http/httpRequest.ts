@@ -8,8 +8,8 @@ export class HttpRequest {
     this.service = service;
   }
 
-  get(url: ApiUrlType) {
-    return this.service.get(url).catch((error) => {
+  get(url: ApiUrlType, queryString = '') {
+    return this.service.get(`${url}?${queryString}`).catch((error) => {
       console.log('error: ', error);
     });
   }

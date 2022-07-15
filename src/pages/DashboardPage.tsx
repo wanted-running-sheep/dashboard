@@ -1,8 +1,19 @@
-import React from 'react';
-import Layout from '@/components/Layout';
+import React, { useEffect } from 'react';
+import Report from '@/components/Report';
+import { useTotalDataManagement } from '@/api/models/useTotalDataManagement';
+import styled from 'styled-components';
 
 const DashboardPage = () => {
-  return <h1>DashboardPage</h1>;
+  const {
+    totalData: { reports },
+    getTotalData,
+  } = useTotalDataManagement();
+
+  useEffect(() => {
+    getTotalData();
+  }, []);
+
+  return <Report data={reports} />;
 };
 
 export default DashboardPage;
