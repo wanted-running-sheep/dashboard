@@ -1,3 +1,5 @@
+import mixins from './mixins';
+
 const color = {
   background: {
     primary: '#F6F7F8',
@@ -22,13 +24,8 @@ const color = {
   },
 };
 
-const zIndex = {
-  modalLevel: 500,
-  menuLevel: 300,
-};
-
 export const theme = {
   color,
-  zIndex,
+  mixins,
 };
 export type Theme = typeof theme;
