@@ -5,8 +5,13 @@ import MenuItem from '@mui/material/MenuItem';
 import styled from 'styled-components';
 import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
 import { useTotalDataManagement } from '@/api/models/useTotalDataManagement';
+import changeOriginalDateFormat from '@/utils/changeOriginalDateFormat';
 
-const DropDownMenu = () => {
+interface DropdownProps {
+  getSpecificWeekData: (datesOfWeek: string[]) => void;
+}
+
+const Dropdown = ({ getSpecificWeekData }: DropdownProps) => {
   const { weekList, getTotalData } = useTotalDataManagement();
 
   useEffect(() => {
@@ -14,7 +19,8 @@ const DropDownMenu = () => {
   }, []);
 
   const clickedWeekList = (event: React.MouseEvent<HTMLElement>) => {
-    console.log(event.currentTarget.textContent);
+    const selectedDate = event.currentTarget.textContent as string;
+    getSpecificWeekData(changeOriginalDateFormat(selectedDate));
   };
 
   return (
@@ -27,11 +33,7 @@ const DropDownMenu = () => {
           <StyledMenu {...bindMenu(popupState)}>
             {weekList.map((week, index) => {
               return (
-                <StyledMenuItem
-                  key={index}
-                  onClick={clickedWeekList}
-                  style={{ fontSize: '12px' }}
-                >
+                <StyledMenuItem key={index} onClick={clickedWeekList}>
                   {week}
                 </StyledMenuItem>
               );
@@ -46,10 +48,10 @@ const DropDownMenu = () => {
 const StyledMenu = styled(Menu)`
   height: 200px;
   div {
-    left: 0px !important;
+    /* left: 0px !important; */
   }
 `;
 const StyledMenuItem = styled(MenuItem)`
-  font-size: 14px;
+  font-size: 12px;
 `;
-export default DropDownMenu;
+export default Dropdown;

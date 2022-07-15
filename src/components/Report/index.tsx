@@ -10,17 +10,23 @@ import {
 } from 'recharts';
 import { ReportInterface } from 'request';
 import styled from 'styled-components';
-import DropDownMenu from '@/components/DropDownMenu';
+import DropDownMenu from '@/components/Dropdown';
 import Summary from './Summary';
+import { useReportModel } from '@/api/models/useReportModel';
 
 interface ReportProps {
   data: ReportInterface[];
 }
 
 const Report = ({ data }: ReportProps) => {
+  const { reports, getWeekReports } = useReportModel();
+  const getSpecificWeekData = (datesOfWeek: string[]) => {
+    getWeekReports(datesOfWeek);
+  };
+
   return (
     <>
-      <DropDownMenu />
+      <DropDownMenu getSpecificWeekData={getSpecificWeekData} />
       <Container>
         <SummaryContainer>
           <Summary />
@@ -30,7 +36,11 @@ const Report = ({ data }: ReportProps) => {
           <Summary />
           <Summary />
         </SummaryContainer>
-        <LineChart width={1000} height={250} data={data}>
+        <LineChart
+          width={1000}
+          height={250}
+          data={reports.length ? reports : data}
+        >
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="monthDate" style={{ fontSize: '14px' }} />
           <YAxis />

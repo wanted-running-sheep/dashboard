@@ -7,13 +7,15 @@ import {
 } from 'date-fns';
 import { ReportInterface, MediaInterface } from 'request';
 
+const KOREAN_DATE_FORMAT = 'yyyy년MM월dd일';
+
 const getStartDateOfWeek = (date: string) => {
   let dataFns = new Date(date);
   let startDate = '';
   if (isMonday(dataFns)) {
-    startDate = format(new Date(date), 'yyyy년MM월dd일');
+    startDate = format(new Date(date), KOREAN_DATE_FORMAT);
   } else {
-    startDate = format(previousMonday(new Date(date)), 'yyyy년MM월dd일');
+    startDate = format(previousMonday(new Date(date)), KOREAN_DATE_FORMAT);
   }
   return startDate;
 };
@@ -22,9 +24,9 @@ const getEndDateOfWeek = (date: string) => {
   let dataFns = new Date(date);
   let endDate = '';
   if (isSunday(dataFns)) {
-    endDate = format(new Date(date), 'yyyy년MM월dd일');
+    endDate = format(new Date(date), KOREAN_DATE_FORMAT);
   } else {
-    endDate = format(nextSunday(new Date(date)), 'yyyy년MM월dd일');
+    endDate = format(nextSunday(new Date(date)), KOREAN_DATE_FORMAT);
   }
   return endDate;
 };
@@ -53,7 +55,6 @@ const createWeekList = (
     makeWeekList(media.date, weekArray);
   });
 
-  console.log(weekArray);
   return weekArray;
 };
 
