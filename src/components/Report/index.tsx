@@ -11,7 +11,7 @@ import {
 import { ReportInterface } from 'request';
 import styled from 'styled-components';
 import DropDownMenu from '@/components/DropDownMenu';
-import Summary from './Summary';
+import SummaryCard from './SummaryCard';
 
 interface ReportProps {
   data: ReportInterface[];
@@ -23,12 +23,12 @@ const Report = ({ data }: ReportProps) => {
       <DropDownMenu />
       <Container>
         <SummaryContainer>
-          <Summary />
-          <Summary />
-          <Summary />
-          <Summary />
-          <Summary />
-          <Summary />
+          <SummaryCard title="ROAS" summary="697%" />
+          <SummaryCard title="광고비" summary="3,799만원" />
+          <SummaryCard title="노출 수" summary="971만 회" />
+          <SummaryCard title="클릭수" summary="9.1만 회" />
+          <SummaryCard title="전환 수" summary="8,523 회" />
+          <SummaryCard title="매출" summary="2.6억 원" />
         </SummaryContainer>
         <LineChart width={1000} height={250} data={data}>
           <CartesianGrid strokeDasharray="3 3" />
@@ -47,17 +47,18 @@ const Report = ({ data }: ReportProps) => {
 export default Report;
 
 const Container = styled.div`
+  width: 100%;
   display: flex;
+  align-items: center;
   flex-direction: column;
   padding: 20px;
-  width: 1000px;
-  align-items: center;
 
-  background-color: ${({ theme }) => theme.color.background.primary};
+  background-color: ${({ theme }) => theme.color.background.white};
   border-radius: 10px;
 `;
 
 const SummaryContainer = styled.div`
+  width: 100%;
   display: flex;
   justify-content: center;
   flex-wrap: wrap;

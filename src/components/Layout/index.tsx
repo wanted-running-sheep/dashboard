@@ -14,7 +14,9 @@ const Layout = () => {
       <NavigationBar isOpened={isOpened} />
       <Content>
         <Header toggleDrawer={toggleDrawer} />
-        <Outlet />
+        <Article>
+          <Outlet />
+        </Article>
       </Content>
     </Wrapper>
   );
@@ -30,4 +32,8 @@ const Wrapper = styled.main`
 const Content = styled.section`
   width: 100%;
   background: ${({ theme }) => theme.color.background.lightgray};
+  padding: 0px 20px;
+`;
+const Article = styled.article`
+  padding: 20px;
 `;

@@ -1,16 +1,35 @@
-import { Card, CardContent, Typography } from '@mui/material';
 import React from 'react';
+import styled from 'styled-components';
 
-const SummaryCard = () => {
+interface SummaryCardProps {
+  title: string;
+  summary: string;
+}
+const SummaryCard = ({ title, summary }: SummaryCardProps) => {
   return (
-    <Card sx={{ minWidth: 275 }}>
-      <CardContent>
-        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-          Word of the Day
-        </Typography>
-      </CardContent>
-    </Card>
+    <Wrapper>
+      <p>{title}</p>
+      <h1>{summary}</h1>
+    </Wrapper>
   );
 };
 
 export default SummaryCard;
+
+const Wrapper = styled.div`
+  border: 2px solid ${({ theme }) => theme.color.border.lightgray};
+  width: 28%;
+  padding: 15px 10px;
+  border-radius: 5px;
+
+  p {
+    color: ${({ theme }) => theme.color.font.lightgray};
+    font-size: 14px;
+    margin-bottom: 5px;
+  }
+  h1 {
+    color: ${({ theme }) => theme.color.font.primary};
+    font-weight: 900;
+    font-size: 23px;
+  }
+`;
