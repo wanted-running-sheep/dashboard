@@ -1,13 +1,17 @@
 import React from 'react';
 import { Route, Routes, Navigate } from 'react-router-dom';
-import { DashboardPage, ManagementPage } from '@/pages';
+import Layout from '@/components/Layout';
+import { DashboardPage, ManagementPage, DrawerTest } from '@/pages';
 
 const Router = () => {
   return (
     <Routes>
-      <Route path="/" element={<Navigate replace to="/dashboard" />} />
-      <Route path="/dashboard" element={<DashboardPage />} />
-      <Route path="/management" element={<ManagementPage />} />
+      <Route element={<Layout />}>
+        <Route path="/" element={<Navigate replace to="/dashboard" />} />
+        <Route path="/dashboard" element={<DashboardPage />} />
+        <Route path="/management" element={<ManagementPage />} />
+        <Route path="*" element={<Navigate replace to="/dashboard" />} />
+      </Route>
     </Routes>
   );
 };
