@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { apiRequest } from '@/api/instance';
 import { AxiosResponse } from 'axios';
-import { MediaProps } from 'request';
+import { MediaInterface } from 'request';
 
 export const useMediaModel = () => {
-  const [media, setMedia] = useState<MediaProps[]>([]);
+  const [media, setMedia] = useState<MediaInterface[]>([]);
 
   const updateMedia = (response: AxiosResponse | void) => {
     if (response) {
