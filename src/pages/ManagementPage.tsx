@@ -3,9 +3,9 @@ import Layout from '@/components/Layout';
 
 const ManagementPage = () => {
   return (
-    <Layout>
+    <>
       <h1>ManagementPage</h1>
-    </Layout>
+    </>
   );
 };
 
