@@ -43,14 +43,14 @@ const createWeekList = (
   reportData: ReportInterface[],
   mediaData: MediaInterface[]
 ) => {
-  const weekArray: Array<string> = [];
+  const weekArray: string[] = [];
 
-  reportData.map((data) => {
-    makeWeekList(data.date, weekArray);
+  reportData.map((report) => {
+    makeWeekList(report.date, weekArray);
   });
 
-  mediaData.map((data) => {
-    makeWeekList(data.date, weekArray);
+  mediaData.map((media) => {
+    makeWeekList(media.date, weekArray);
   });
 
   console.log(weekArray);
