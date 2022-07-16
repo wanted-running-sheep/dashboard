@@ -14,8 +14,8 @@ const Header = ({ toggleDrawer }: HeaderProps) => {
     <AppBar>
       <MenuIcon onClick={toggleDrawer} />
       <RightIconWrapper>
-        <SettingsIcon />
         <NotificationsNoneIcon />
+        <SettingsIcon />
         <AccountCircle />
       </RightIconWrapper>
     </AppBar>

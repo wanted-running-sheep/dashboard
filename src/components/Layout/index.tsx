@@ -2,9 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 import { Outlet } from 'react-router-dom';
 
+import useDrawer from '@/hooks/useDrawer';
+import Title from './Title';
 import Header from './Header';
 import NavigationBar from './NavigationBar';
-import useDrawer from '@/hooks/useDrawer';
 
 const Layout = () => {
   const { isOpened, toggleDrawer } = useDrawer();
@@ -15,6 +16,7 @@ const Layout = () => {
       <Content>
         <Header toggleDrawer={toggleDrawer} />
         <Article>
+          <Title />
           <Outlet />
         </Article>
       </Content>

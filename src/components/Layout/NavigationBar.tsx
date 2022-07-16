@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate, useLocation } from 'react-router';
 import styled from 'styled-components';
 
-import findClickedMenu from '@/utils/findClickedMenu';
+import { findClickedMenu } from '@/utils/findClickedMenu';
 import { navigationList } from '@/routes';
 
 interface NavigationBarProps {
