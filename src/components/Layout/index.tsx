@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { Outlet } from 'react-router-dom';
 
 import useDrawer from '@/hooks/useDrawer';
-import Title from './Title';
 import Header from './Header';
 import NavigationBar from './NavigationBar';
 
@@ -16,7 +15,6 @@ const Layout = () => {
       <Content>
         <Header toggleDrawer={toggleDrawer} />
         <Article>
-          <Title />
           <Outlet />
         </Article>
       </Content>
@@ -37,5 +35,8 @@ const Content = styled.section`
   padding: 0px 20px;
 `;
 const Article = styled.article`
+  box-sizing: border-box;
   padding: 20px;
+  height: calc(100% - 55px);
+  overflow-y: auto;
 `;

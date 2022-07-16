@@ -5,7 +5,7 @@ interface SummaryCardProps {
   title: string;
   summary: string;
 }
-const SummaryCard = ({ title, summary }: SummaryCardProps) => {
+const AdvertisingCrad = ({ title, summary }: SummaryCardProps) => {
   return (
     <Wrapper>
       <p>{title}</p>
@@ -14,7 +14,7 @@ const SummaryCard = ({ title, summary }: SummaryCardProps) => {
   );
 };
 
-export default SummaryCard;
+export default AdvertisingCrad;
 
 const Wrapper = styled.div`
   border: 2px solid ${({ theme }) => theme.color.border.lightgray};

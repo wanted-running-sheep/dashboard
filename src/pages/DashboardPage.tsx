@@ -1,7 +1,11 @@
 import React, { useEffect } from 'react';
-import Report from '@/components/Report';
-import { useTotalDataManagement } from '@/api/models/useTotalDataManagement';
 import styled from 'styled-components';
+import { useTotalDataManagement } from '@/api/models/useTotalDataManagement';
+
+import Dropdown from '@/components/Dropdown';
+import Title from '@/components/Layout/Title';
+import AdvertisingStatus from '@/components/AdvertisingStatus';
+import MediaStatus from '@/components/MediaStatus';
 
 const DashboardPage = () => {
   const {
@@ -13,7 +17,15 @@ const DashboardPage = () => {
     getTotalData();
   }, []);
 
-  return <Report data={reports} />;
+  return (
+    <>
+      <Title>
+        <Dropdown />
+      </Title>
+      <AdvertisingStatus data={reports} />
+      <MediaStatus />
+    </>
+  );
 };
 
 export default DashboardPage;
