@@ -6,7 +6,7 @@ import {
   nextSunday,
   getUnixTime,
 } from 'date-fns';
-import { MediaInterface, ReportInterface, TotalData } from 'request';
+import { MediaInterface, ReportInterface, TotalDataInterface } from 'request';
 
 type CombineDataType = ReportInterface | MediaInterface;
 
@@ -125,7 +125,7 @@ const setWeeklyData = (
   dataList: string[][],
   combinedData: CombineDataType[]
 ) => {
-  const weeklyData: TotalData = {};
+  const weeklyData: TotalDataInterface = {};
 
   dataList.forEach(([periodOfWeek, startDate, endDate]) => {
     const reportData = combinedData.filter(

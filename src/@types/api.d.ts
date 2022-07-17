@@ -57,7 +57,7 @@ declare module 'request' {
     media: MediaInterface[];
   }
 
-  interface TotalData {
+  interface TotalDataInterface {
     [date: string]: {
       reports: ReportInterface[];
       media: MediaInterface[];
