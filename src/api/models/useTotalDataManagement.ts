@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { TotalDataManagementInterface } from 'request';
 import { apiRequest } from '../instance';
 import createWeekList from '@/utils/createWeekList';
+import createWeeklyList from '@/utils/createWeeklyList';
 
 export const useTotalDataManagement = () => {
   const [totalData, setTotalData] = useState<TotalDataManagementInterface>({
@@ -18,17 +19,19 @@ export const useTotalDataManagement = () => {
         apiRequest.get('/media'),
       ]);
 
-      const reportsData = dateFormat(reportsResponse);
-      const mediaData = dateFormat(mediaResponse);
+      const reportsFormattedData = dateFormat(reportsResponse);
+      const MediaFormattedData = dateFormat(mediaResponse);
 
       setTotalData({
-        reports: reportsData,
-        media: mediaData,
+        reports: reportsFormattedData,
+        media: MediaFormattedData,
       });
-      setWeekList(createWeekList(reportsData, mediaData));
+
+      console.log(createWeeklyList(reportsFormattedData, MediaFormattedData));
+      setWeekList(createWeekList(reportsFormattedData, MediaFormattedData));
     } catch (error) {
       console.log(error);
-      alert('데이터를 불러오는데 실패 하였습니다. 관리자에게 문의하세요');
+      /* alert('데이터를 불러오는데 실패 하였습니다. 관리자에게 문의하세요'); */
     }
   };
 

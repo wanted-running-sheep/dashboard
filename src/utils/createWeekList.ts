@@ -11,7 +11,7 @@ const getStartDateOfWeek = (date: string) => {
   let dataFns = new Date(date);
   let startDate = '';
   if (isMonday(dataFns)) {
-    startDate = format(new Date(date), 'yyyy년MM월dd일');
+    return (startDate = format(new Date(date), 'yyyy년MM월dd일'));
   } else {
     startDate = format(previousMonday(new Date(date)), 'yyyy년MM월dd일');
   }
@@ -29,7 +29,7 @@ const getEndDateOfWeek = (date: string) => {
   return endDate;
 };
 
-const makeWeekList = (date: string, weekArray: Array<string>) => {
+const makeWeekList = (date: string, weekArray: string[]) => {
   const startDateOfWeek = getStartDateOfWeek(date);
   const endDateOfWeek = getEndDateOfWeek(date);
   const periodOfWeek = `${startDateOfWeek} ~ ${endDateOfWeek}`;
@@ -53,7 +53,6 @@ const createWeekList = (
     makeWeekList(media.date, weekArray);
   });
 
-  console.log(weekArray);
   return weekArray;
 };
 

@@ -16,7 +16,6 @@ const DropDownMenu = () => {
   const clickedWeekList = (event: React.MouseEvent<HTMLElement>) => {
     console.log(event.currentTarget.textContent);
   };
-
   return (
     <PopupState variant="popover" popupId="demo-popup-menu">
       {(popupState) => (
