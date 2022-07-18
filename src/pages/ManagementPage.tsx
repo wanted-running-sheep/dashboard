@@ -1,9 +1,10 @@
 import React from 'react';
-import Layout from '@/components/Layout';
+import Title from '@/components/Layout/Title';
 
 const ManagementPage = () => {
   return (
     <>
+      <Title />
       <h1>ManagementPage</h1>
     </>
   );
