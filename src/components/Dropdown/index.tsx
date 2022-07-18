@@ -18,7 +18,7 @@ const Dropdown = ({ getSpecificWeekData }: DropdownProps) => {
     getTotalData();
   }, []);
 
-  const clickedWeekList = (event: React.MouseEvent<HTMLElement>) => {
+  const clickedWeekList = (event: React.MouseEvent<HTMLLIElement>) => {
     const selectedDate = event.currentTarget.textContent as string;
     getSpecificWeekData(changeOriginalDateFormat(selectedDate));
   };
