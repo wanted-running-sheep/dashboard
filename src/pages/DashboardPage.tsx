@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import styled from 'styled-components';
 import { useTotalDataManagement } from '@/api/models/useTotalDataManagement';
 
 import Dropdown from '@/components/Dropdown';
@@ -8,21 +7,28 @@ import AdvertisingStatus from '@/components/AdvertisingStatus';
 import MediaStatus from '@/components/MediaStatus';
 
 const DashboardPage = () => {
-  const {
-    totalData: { reports },
-    getTotalData,
-  } = useTotalDataManagement();
+  const { totalWeeklyData, selectedDate, setSelectedDate, getTotalData } =
+    useTotalDataManagement();
+
+  const getSpecificWeekData = (datesOfWeek: string) => {
+    setSelectedDate(datesOfWeek);
+  };
 
   useEffect(() => {
     getTotalData();
   }, []);
 
+  if (!totalWeeklyData[selectedDate]) return null;
+
   return (
     <>
       <Title>
-        <Dropdown />
+        <Dropdown
+          getSpecificWeekData={getSpecificWeekData}
+          weekList={Object.keys(totalWeeklyData)}
+        />
       </Title>
-      <AdvertisingStatus data={reports} />
+      <AdvertisingStatus data={totalWeeklyData[selectedDate].reports} />
       <MediaStatus />
     </>
   );

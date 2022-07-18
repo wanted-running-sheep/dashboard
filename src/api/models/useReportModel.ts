@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { apiRequest } from '@/api/instance';
-import { AxiosResponse } from 'axios';
 import { ReportInterface } from 'request';
 import dateFormat from '@/utils/dateFormat';
 export const useReportModel = () => {
@@ -12,7 +11,8 @@ export const useReportModel = () => {
     setReports(formattedData);
   };
 
-  const getWeekReports = async (startDate: string, endDate: string) => {
+  const getWeekReports = async (datesOfWeek: string[]) => {
+    const [startDate, endDate] = datesOfWeek;
     const response = await apiRequest.get(
       '/report',
       `date_gte=${startDate}&date_lte=${endDate}`

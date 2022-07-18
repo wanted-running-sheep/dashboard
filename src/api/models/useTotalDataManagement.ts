@@ -1,16 +1,43 @@
 import dateFormat from '@/utils/dateFormat';
 import { useState } from 'react';
-import { TotalDataManagementInterface } from 'request';
+import {
+  TotalDataManagementInterface,
+  TotalDataInterface,
+  ReportInterface,
+  MediaInterface,
+  ApiDataType,
+  CombineDataType,
+} from 'request';
 import { apiRequest } from '../instance';
-import createWeekList from '@/utils/createWeekList';
 import createWeeklyList from '@/utils/createWeeklyList';
+import { AxiosResponse } from 'axios';
+import { format } from 'date-fns';
 
 export const useTotalDataManagement = () => {
   const [totalData, setTotalData] = useState<TotalDataManagementInterface>({
     reports: [],
     media: [],
   });
-  const [weekList, setWeekList] = useState<string[]>([]);
+  const [totalWeeklyData, setTotalWeeklyData] = useState<TotalDataInterface>(
+    {}
+  );
+  const [selectedDate, setSelectedDate] = useState<string>('');
+
+  const addTypeAndYearMonthDate = (
+    response: AxiosResponse | void,
+    dataType: ApiDataType
+  ) => {
+    if (!response) return;
+
+    const data = response.data.map((data: CombineDataType) => {
+      const date = new Date(data.date);
+      const yearMonthDate = format(date, 'yyyy년MM월dd일');
+      const monthDate = format(date, 'MM월dd일');
+      return { ...data, yearMonthDate, monthDate, dataType };
+    });
+
+    return data;
+  };
 
   const getTotalData = async () => {
     try {
@@ -19,16 +46,13 @@ export const useTotalDataManagement = () => {
         apiRequest.get('/media'),
       ]);
 
-      const reportsFormattedData = dateFormat(reportsResponse);
-      const mediaFormattedData = dateFormat(mediaResponse);
+      const reports = addTypeAndYearMonthDate(reportsResponse, 'Report');
+      const media = addTypeAndYearMonthDate(mediaResponse, 'Media');
 
-      setTotalData({
-        reports: reportsFormattedData,
-        media: mediaFormattedData,
-      });
+      const weeklyList = createWeeklyList(reports, media);
 
-      console.log(createWeeklyList(reportsFormattedData, mediaFormattedData));
-      setWeekList(createWeekList(reportsFormattedData, mediaFormattedData));
+      setTotalWeeklyData(weeklyList);
+      setSelectedDate(Object.keys(weeklyList)[0]);
     } catch (error) {
       console.log(error);
       /* alert('데이터를 불러오는데 실패 하였습니다. 관리자에게 문의하세요'); */
@@ -36,8 +60,9 @@ export const useTotalDataManagement = () => {
   };
 
   return {
-    totalData,
     getTotalData,
-    weekList,
+    totalWeeklyData,
+    selectedDate,
+    setSelectedDate,
   };
 };

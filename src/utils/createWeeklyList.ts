@@ -10,18 +10,8 @@ import {
   MediaInterface,
   ReportInterface,
   TotalDataInterface,
-  ApiDataType,
+  CombineDataType,
 } from 'request';
-
-type CombineDataType = ReportInterface | MediaInterface;
-
-const addTypeAndYearMonthDate = (reciveDate: string) => {
-  const date = new Date(reciveDate);
-  const yearMonthDate = format(date, 'yyyy년MM월dd일');
-  const monthDate = format(date, 'MM월dd일');
-
-  return { yearMonthDate, monthDate };
-};
 
 const sortData = (
   combineDataA: CombineDataType,
@@ -38,20 +28,8 @@ const combineData = (
   mediaData: MediaInterface[]
 ) => {
   let combinedData: CombineDataType[];
-  let willCombineReportData: ReportInterface[];
-  let willCombineMediaData: MediaInterface[];
 
-  willCombineReportData = reportData.map((report) => {
-    const { yearMonthDate, monthDate } = addTypeAndYearMonthDate(report.date);
-    return { ...report, yearMonthDate, monthDate, dataType: 'Report' };
-  });
-
-  willCombineMediaData = mediaData.map((media) => {
-    const { yearMonthDate, monthDate } = addTypeAndYearMonthDate(media.date);
-    return { ...media, yearMonthDate, monthDate, dataType: 'Media' };
-  });
-
-  combinedData = [...willCombineReportData, ...willCombineMediaData];
+  combinedData = [...reportData, ...mediaData];
 
   combinedData.sort(sortData);
 

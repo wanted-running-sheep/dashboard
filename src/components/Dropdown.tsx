@@ -1,23 +1,22 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { useTotalDataManagement } from '@/api/models/useTotalDataManagement';
 
-const Dropdown = () => {
-  const { weekList, getTotalData } = useTotalDataManagement();
+interface DropdownProps {
+  getSpecificWeekData: (datesOfWeek: string) => void;
+  weekList: string[];
+}
 
-  useEffect(() => {
-    getTotalData();
-  }, []);
-
-  const clickedWeekList = (event: React.MouseEvent<HTMLElement>) => {
-    console.log(event.currentTarget.textContent);
+const Dropdown = ({ getSpecificWeekData, weekList }: DropdownProps) => {
+  const selectedWeekList = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedDate = event.target.value;
+    getSpecificWeekData(selectedDate);
   };
 
   return (
-    <SelectList name="">
-      <option>2022년03월07일 ~ 2022년03월13일</option>
-      <option>2022년03월07일 ~ 2022년03월13일</option>
-      <option>2022년03월07일 ~ 2022년03월13일</option>
+    <SelectList name="" onChange={selectedWeekList}>
+      {weekList.map((week, index) => {
+        return <option key={index}>{week}</option>;
+      })}
     </SelectList>
   );
 };
