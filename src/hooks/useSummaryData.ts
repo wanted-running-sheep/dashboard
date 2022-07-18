@@ -54,7 +54,6 @@ const useSummaryData = () => {
       return value.toString().replace(regex, ',');
     } else if (length < 9) {
       // 만 단위
-      console.log('value', value);
       const formattedValue = (value / 10 ** 4).toFixed(0).replace(regex, ',');
       return `${formattedValue}만`;
     }
