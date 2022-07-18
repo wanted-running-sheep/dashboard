@@ -7,28 +7,32 @@ import AdvertisingStatus from '@/components/AdvertisingStatus';
 import MediaStatus from '@/components/MediaStatus';
 
 const DashboardPage = () => {
-  const { totalWeeklyData, selectedDate, setSelectedDate, getTotalData } =
-    useTotalDataManagement();
+  const {
+    totalWeeklyChartData,
+    selectedDate,
+    setSelectedDate,
+    getTotalChartData,
+  } = useTotalDataManagement();
 
   const getSpecificWeekData = (datesOfWeek: string) => {
     setSelectedDate(datesOfWeek);
   };
 
   useEffect(() => {
-    getTotalData();
+    getTotalChartData();
   }, []);
 
-  if (!totalWeeklyData[selectedDate]) return null;
+  if (!totalWeeklyChartData[selectedDate]) return null;
 
   return (
     <>
       <Title>
         <Dropdown
           getSpecificWeekData={getSpecificWeekData}
-          weekList={Object.keys(totalWeeklyData)}
+          weekList={Object.keys(totalWeeklyChartData)}
         />
       </Title>
-      <AdvertisingStatus data={totalWeeklyData[selectedDate].reports} />
+      <AdvertisingStatus data={totalWeeklyChartData[selectedDate].reports} />
       <MediaStatus />
     </>
   );
