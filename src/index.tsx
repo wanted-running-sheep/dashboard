@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { ThemeProvider } from 'styled-components';
 import { BrowserRouter } from 'react-router-dom';
-import StyledEngineProvider from '@mui/material/StyledEngineProvider';
 
 import App from './App';
 import { theme } from '@/styles/theme';
@@ -15,11 +14,9 @@ root.render(
   <React.StrictMode>
     <GlobalStyles />
     <BrowserRouter>
-      <StyledEngineProvider injectFirst>
-        <ThemeProvider theme={theme}>
-          <App />
-        </ThemeProvider>
-      </StyledEngineProvider>
+      <ThemeProvider theme={theme}>
+        <App />
+      </ThemeProvider>
     </BrowserRouter>
   </React.StrictMode>
 );
