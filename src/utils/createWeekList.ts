@@ -11,7 +11,7 @@ const getStartDateOfWeek = (date: string) => {
   let dataFns = new Date(date);
   let startDate = '';
   if (isMonday(dataFns)) {
-    return (startDate = format(new Date(date), 'yyyy년MM월dd일'));
+    startDate = format(new Date(date), 'yyyy년MM월dd일');
   } else {
     startDate = format(previousMonday(new Date(date)), 'yyyy년MM월dd일');
   }

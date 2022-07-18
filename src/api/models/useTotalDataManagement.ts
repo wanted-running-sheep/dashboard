@@ -20,15 +20,15 @@ export const useTotalDataManagement = () => {
       ]);
 
       const reportsFormattedData = dateFormat(reportsResponse);
-      const MediaFormattedData = dateFormat(mediaResponse);
+      const mediaFormattedData = dateFormat(mediaResponse);
 
       setTotalData({
         reports: reportsFormattedData,
-        media: MediaFormattedData,
+        media: mediaFormattedData,
       });
 
-      console.log(createWeeklyList(reportsFormattedData, MediaFormattedData));
-      setWeekList(createWeekList(reportsFormattedData, MediaFormattedData));
+      console.log(createWeeklyList(reportsFormattedData, mediaFormattedData));
+      setWeekList(createWeekList(reportsFormattedData, mediaFormattedData));
     } catch (error) {
       console.log(error);
       /* alert('데이터를 불러오는데 실패 하였습니다. 관리자에게 문의하세요'); */

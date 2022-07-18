@@ -1,7 +1,8 @@
 declare module 'request' {
   type ApiUrlType = '/media' | '/advertisements' | '/report';
+  type ApiDataType = 'Report' | 'Media';
   interface ReportInterface {
-    dataType: 'Report' | 'Media';
+    dataType: ApiDataType;
     imp: number;
     click: number;
     cost: number;
@@ -36,7 +37,7 @@ declare module 'request' {
   }
 
   interface MediaInterface {
-    dataType: 'Report' | 'Media';
+    dataType: ApiDataType;
     channel: string;
     date: string;
 

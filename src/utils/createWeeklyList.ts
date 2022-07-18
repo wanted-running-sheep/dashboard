@@ -6,19 +6,21 @@ import {
   nextSunday,
   getUnixTime,
 } from 'date-fns';
-import { MediaInterface, ReportInterface, TotalDataInterface } from 'request';
+import {
+  MediaInterface,
+  ReportInterface,
+  TotalDataInterface,
+  ApiDataType,
+} from 'request';
 
 type CombineDataType = ReportInterface | MediaInterface;
 
-const addTypeAndYearMonthDate = (
-  data: CombineDataType,
-  dataType: 'Report' | 'Media'
-) => {
-  const date = new Date(data.date);
+const addTypeAndYearMonthDate = (reciveDate: string) => {
+  const date = new Date(reciveDate);
   const yearMonthDate = format(date, 'yyyy년MM월dd일');
   const monthDate = format(date, 'MM월dd일');
 
-  return { ...data, yearMonthDate, monthDate, dataType };
+  return { yearMonthDate, monthDate };
 };
 
 const sortData = (
@@ -35,14 +37,21 @@ const combineData = (
   reportData: ReportInterface[],
   mediaData: MediaInterface[]
 ) => {
-  const combinedData: CombineDataType[] = [];
-  reportData.forEach((report) => {
-    combinedData.push(addTypeAndYearMonthDate(report, 'Report'));
+  let combinedData: CombineDataType[];
+  let willCombineReportData: ReportInterface[];
+  let willCombineMediaData: MediaInterface[];
+
+  willCombineReportData = reportData.map((report) => {
+    const { yearMonthDate, monthDate } = addTypeAndYearMonthDate(report.date);
+    return { ...report, yearMonthDate, monthDate, dataType: 'Report' };
   });
 
-  mediaData.forEach((media) => {
-    combinedData.push(addTypeAndYearMonthDate(media, 'Media'));
+  willCombineMediaData = mediaData.map((media) => {
+    const { yearMonthDate, monthDate } = addTypeAndYearMonthDate(media.date);
+    return { ...media, yearMonthDate, monthDate, dataType: 'Media' };
   });
+
+  combinedData = [...willCombineReportData, ...willCombineMediaData];
 
   combinedData.sort(sortData);
 
@@ -98,7 +107,11 @@ const makeWeekList = (date: string) => {
 
 const makeDeduplicatedDateList = (combinedData: CombineDataType[]) => {
   const dateList: string[][] = [];
-  [...new Set(combinedData.map((data) => data.date))].forEach((data) => {
+  const deduplicatedCombinedData = new Set(
+    combinedData.map((data) => data.date)
+  );
+
+  [...deduplicatedCombinedData].forEach((data) => {
     const { periodOfWeek, startDate, endDate } = makeWeekList(data);
     dateList.push([periodOfWeek, startDate, endDate]);
   });
@@ -132,17 +145,17 @@ const setWeeklyData = (
       (data) =>
         data.dataType === 'Report' &&
         checkBetweenStartAndEndDate({ date: data.date, startDate, endDate })
-    );
+    ) as ReportInterface[];
 
     const mediaData = combinedData.filter(
       (data) =>
         data.dataType === 'Media' &&
         checkBetweenStartAndEndDate({ date: data.date, startDate, endDate })
-    );
+    ) as MediaInterface[];
 
     weeklyData[periodOfWeek] = {
-      reports: reportData as ReportInterface[],
-      media: mediaData as MediaInterface[],
+      reports: reportData,
+      media: mediaData,
     };
   });
 
