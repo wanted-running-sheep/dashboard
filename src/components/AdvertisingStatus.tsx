@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   CartesianGrid,
   Legend,
@@ -11,21 +11,26 @@ import {
 import { ReportInterface } from 'request';
 import styled from 'styled-components';
 import Report from '@/components/Report';
-import AdvertisingCrad from '@/components/AdvertisingCrad';
+import AdvertisingCard from '@/components/AdvertisingCard';
+import useSummaryData from '@/hooks/useSummaryData';
 
 interface AdvertisingStatusProps {
   data: ReportInterface[];
 }
+
 const AdvertisingStatus = ({ data }: AdvertisingStatusProps) => {
+  const { summaryData, organizeSummaryData } = useSummaryData();
+
+  useEffect(() => {
+    organizeSummaryData(data);
+  }, [JSON.stringify(data)]);
+
   return (
     <Report title="통합 광고 현황">
       <SummaryContainer>
-        <AdvertisingCrad title="ROAS" summary="697%" />
-        <AdvertisingCrad title="광고비" summary="3,799만원" />
-        <AdvertisingCrad title="노출 수" summary="971만 회" />
-        <AdvertisingCrad title="클릭수" summary="9.1만 회" />
-        <AdvertisingCrad title="전환 수" summary="8,523 회" />
-        <AdvertisingCrad title="매출" summary="2.6억 원" />
+        {summaryData.map(({ title, summary }, index) => (
+          <AdvertisingCard key={index} title={title} summary={summary} />
+        ))}
       </SummaryContainer>
       <LineChart width={1000} height={250} data={data}>
         <CartesianGrid strokeDasharray="3 3" />

@@ -1,26 +1,14 @@
-import dateFormat from '@/utils/dateFormat';
 import { useState } from 'react';
-import {
-  TotalDataManagementInterface,
-  TotalDataInterface,
-  ReportInterface,
-  MediaInterface,
-  ApiDataType,
-  CombineDataType,
-} from 'request';
+import { TotalDataInterface, ApiDataType, CombineDataType } from 'request';
 import { apiRequest } from '../instance';
 import createWeeklyList from '@/utils/createWeeklyList';
 import { AxiosResponse } from 'axios';
 import { format } from 'date-fns';
 
 export const useTotalDataManagement = () => {
-  const [totalData, setTotalData] = useState<TotalDataManagementInterface>({
-    reports: [],
-    media: [],
-  });
-  const [totalWeeklyData, setTotalWeeklyData] = useState<TotalDataInterface>(
-    {}
-  );
+  const [totalWeeklyChartData, setTotalWeeklyChartData] =
+    useState<TotalDataInterface>({});
+
   const [selectedDate, setSelectedDate] = useState<string>('');
 
   const addTypeAndYearMonthDate = (
@@ -39,7 +27,7 @@ export const useTotalDataManagement = () => {
     return data;
   };
 
-  const getTotalData = async () => {
+  const getTotalChartData = async () => {
     try {
       const [reportsResponse, mediaResponse] = await Promise.all([
         apiRequest.get('/report'),
@@ -51,7 +39,7 @@ export const useTotalDataManagement = () => {
 
       const weeklyList = createWeeklyList(reports, media);
 
-      setTotalWeeklyData(weeklyList);
+      setTotalWeeklyChartData(weeklyList);
       setSelectedDate(Object.keys(weeklyList)[0]);
     } catch (error) {
       console.log(error);
@@ -60,8 +48,8 @@ export const useTotalDataManagement = () => {
   };
 
   return {
-    getTotalData,
-    totalWeeklyData,
+    getTotalChartData,
+    totalWeeklyChartData,
     selectedDate,
     setSelectedDate,
   };
