@@ -24,3 +24,7 @@ export const BUTTON_TYPE = {
   COMPLETE: 'complete',
   CANCEL: 'cancel',
 };
+
+export const MSG_UPDATE_COMPLETE = '수정 완료 하였습니다.';
+export const MSG_UPDATE_FAILED =
+  '수정 실패 하였습니다. 지속 발생할 경우 관리자에게 문의주세요.';

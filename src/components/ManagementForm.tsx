@@ -3,6 +3,8 @@ import {
   MANAGEMENT_INPUT_TITLE,
   MANAGEMENT_STATUS_KOR_TO_ENG,
   BUTTON_TYPE,
+  MSG_UPDATE_COMPLETE,
+  MSG_UPDATE_FAILED,
 } from '@/constants';
 import getCommaLocalString from '@/utils/getCommaLocalString';
 import styled from 'styled-components';
@@ -75,9 +77,9 @@ const ManagementForm = ({ advertisement, isNewForm }: ManagementFormProps) => {
         requestData.id,
         requestData
       );
-      alert('수정 완료 하였습니다');
+      alert(MSG_UPDATE_COMPLETE);
     } catch (error) {
-      alert('수정 실패 하였습니다. 지속 발생할 경우 관리자에게 문의주세요.');
+      alert(MSG_UPDATE_FAILED);
     }
 
     setIsReadOnly((prevState) => !prevState);
@@ -96,7 +98,7 @@ const ManagementForm = ({ advertisement, isNewForm }: ManagementFormProps) => {
           readOnly={isReadOnly}
         />
       </FormTitle>
-      {Object.keys(MANAGEMENT_INPUT_TITLE).map((inputName, i) => {
+      {Object.keys(MANAGEMENT_INPUT_TITLE).map((inputName, index) => {
         let title = MANAGEMENT_INPUT_TITLE[inputName];
         let value =
           !isNewForm && requestValue ? String(requestValue[inputName]) : '';
@@ -109,7 +111,7 @@ const ManagementForm = ({ advertisement, isNewForm }: ManagementFormProps) => {
         if (inputName === 'startDate') {
           return (
             <CalendarInput
-              key={i}
+              key={index}
               title={title}
               date={value}
               disabled={isReadOnly}
@@ -121,7 +123,7 @@ const ManagementForm = ({ advertisement, isNewForm }: ManagementFormProps) => {
 
         return (
           <ManagementInput
-            key={i}
+            key={index}
             title={title}
             value={value}
             inputName={inputName}
@@ -189,12 +191,13 @@ const ButtonWrapper = styled.div`
 const EditButton = styled.button<{ buttonType: string }>`
   padding: 10px 20px 10px 20px;
   background-color: ${({ theme, buttonType }) => {
-    if (buttonType === BUTTON_TYPE.EDIT) {
-      return theme.color.background.white;
-    } else if (buttonType === BUTTON_TYPE.COMPLETE) {
-      return theme.color.button.blue;
-    } else if (buttonType === BUTTON_TYPE.CANCEL) {
-      return theme.color.button.red;
+    switch (buttonType) {
+      case BUTTON_TYPE.EDIT:
+        return theme.color.background.white;
+      case BUTTON_TYPE.COMPLETE:
+        return theme.color.button.blue;
+      case BUTTON_TYPE.CANCEL:
+        return theme.color.button.red;
     }
   }};
   border: 1px solid ${({ theme }) => theme.color.border.lightgray};
