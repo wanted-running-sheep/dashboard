@@ -1,8 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { AdvertisementInterface } from 'request';
 import { apiRequest } from '@/api/instance';
 import { AxiosResponse } from 'axios';
-import { ConstructionOutlined } from '@mui/icons-material';
 
 export const useAdvertisementModel = () => {
   const [advertisements, setAdvertisements] = useState<
@@ -27,11 +26,15 @@ export const useAdvertisementModel = () => {
     const response = await apiRequest.get('/advertisements');
     updateAdvertisements(response);
   };
+  const patchAdvertisements = async <T>(id: number, data: T) => {
+    return await apiRequest.patch('/advertisements', id, data);
+  };
 
   return {
     advertisements,
     getAdvertisements,
     postAdvertisement,
     setAdvertisements,
+    patchAdvertisements,
   };
 };

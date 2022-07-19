@@ -1,37 +1,42 @@
-import { MANAGEMENT_STATUS } from '@/constants';
+import React, { ReactNode } from 'react';
+import { MANAGEMENT_STATUS, MANAGEMENT_STATUS_KOR_TO_ENG } from '@/constants';
 import { InputType } from '@/utils/makeViewData';
-import React from 'react';
 import styled from 'styled-components';
 import Dropdown from './Dropdown';
 
 interface ManagementInputProps {
   title: string;
-  value: string;
+  /*   value: string;
   inputName: string;
   onChangeInput: (
     event:
       | React.ChangeEvent<HTMLInputElement>
       | React.ChangeEvent<HTMLSelectElement>
   ) => void;
-  isNewForm: boolean;
   onlyNumber: boolean;
+  isReadOnly: boolean; */
+  children: ReactNode;
 }
 
-const ManagementInput = ({
-  title,
-  value,
-  inputName,
-  onChangeInput,
-  isNewForm,
-}: ManagementInputProps) => {
+const ManagementInput = ({ title, children }: ManagementInputProps) => {
   return (
     <InputWrapper>
       <Label>{title}</Label>
       <InputContainer>
-        {isNewForm && inputName === 'status' ? (
+        {children}
+        {/* <Input
+          type="text"
+          value={value || ''}
+          onChange={onChangeInput}
+          name={inputName}
+          readOnly={isReadOnly}
+        /> */}
+        {/* {inputName === 'status' ? (
           <Dropdown
             dataList={Object.entries(MANAGEMENT_STATUS)}
             onChange={onChangeInput}
+            name={inputName}
+            defaultValue={MANAGEMENT_STATUS_KOR_TO_ENG[value]}
           />
         ) : (
           <Input
@@ -39,9 +44,9 @@ const ManagementInput = ({
             value={value || ''}
             onChange={onChangeInput}
             name={inputName}
-            readOnly={!isNewForm}
+            readOnly={isReadOnly}
           />
-        )}
+        )} */}
       </InputContainer>
     </InputWrapper>
   );

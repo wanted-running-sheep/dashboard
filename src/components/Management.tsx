@@ -52,16 +52,19 @@ const Management = ({ advertisements }: ManagementProps) => {
             nextId={nextId}
             setIsNewForm={setIsNewForm}
             setAdvertisementList={setAdvertisementList}
+            setAdvertisementsForRender={setAdvertisementsForRender}
           />
         )}
-        {advertisementsForRender.map((advertisement) => {
-          return (
-            <ManagementForm
-              key={advertisement.id}
-              advertisement={makePropsAdvertisement(advertisement)}
-            />
-          );
-        })}
+        {advertisementsForRender
+          .sort((a, b) => b.id - a.id)
+          .map((advertisement) => {
+            return (
+              <ManagementForm
+                key={advertisement.id}
+                advertisement={makePropsAdvertisement(advertisement)}
+              />
+            );
+          })}
       </FormContainer>
     </Wrapper>
   );

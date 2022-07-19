@@ -7,8 +7,9 @@ const makePropsAdvertisement = (advertisement: AdvertisementInterface) => {
   const startDate = format(new Date(advertisement.startDate), DATE_FORMAT);
 
   return {
+    id: advertisement.id,
     title: advertisement.title,
-    status: MANAGEMENT_STATUS[advertisement.status],
+    status: advertisement.status,
     startDate,
     budget: advertisement.budget,
     roas: advertisement.report.roas,

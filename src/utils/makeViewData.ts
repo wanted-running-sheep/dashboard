@@ -1,4 +1,5 @@
-import { MANAGEMENT_INPUT_TITLE } from '@/constants/index';
+import { MANAGEMENT_INPUT_TITLE, MANAGEMENT_STATUS } from '@/constants/index';
+import { AdvertisementDataType } from 'request';
 import getCommaLocalString from './getCommaLocalString';
 
 type DefaultObjType = { [key: string]: string | number };
@@ -13,17 +14,39 @@ export const checkNumberVale = (inputName: string) => {
   );
 };
 
-const makeViewData = (
-  inputName: string,
-  advertisement: DefaultObjType | undefined
-) => {
+interface MakeViewDataParams {
+  inputName: string;
+  advertisement: DefaultObjType | undefined;
+  isReadOnly: boolean;
+  requestValue: AdvertisementDataType;
+  isNewForm: boolean;
+}
+
+const makeViewData = ({
+  inputName,
+  advertisement,
+  isReadOnly,
+  requestValue,
+  isNewForm,
+}: MakeViewDataParams) => {
   let title = MANAGEMENT_INPUT_TITLE[inputName];
-  let value = advertisement && advertisement[inputName];
+  //let value = advertisement && advertisement[inputName];\
+  let value: string | number = requestValue[inputName];
   let onlyNumber: boolean = false;
 
-  if (checkNumberVale(inputName) && value) {
+  /* if (isReadOnly && advertisement) {
+    value = advertisement[inputName];
+  } else if (!isReadOnly && advertisement) {
+    value = requestValue[inputName];
+  } */
+
+  if (checkNumberVale(inputName) && value && isReadOnly && !isNewForm) {
     value = Number(value);
     onlyNumber = true;
+  }
+
+  if (inputName === 'status') {
+    value = MANAGEMENT_STATUS[value];
   }
 
   if (typeof value === 'number' && value > 10000 && inputName !== 'roas') {

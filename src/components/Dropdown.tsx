@@ -6,11 +6,17 @@ interface DropdownProps {
   dataList: string[] | [string, string][];
   defaultValue?: string;
   optionValue?: string;
+  name?: string;
 }
 
-const Dropdown = ({ onChange, dataList }: DropdownProps) => {
+const Dropdown = ({
+  onChange,
+  dataList,
+  name = '',
+  defaultValue = '',
+}: DropdownProps) => {
   return (
-    <SelectList name="" onChange={onChange}>
+    <SelectList name={name} onChange={onChange} defaultValue={defaultValue}>
       {dataList.map((data, index) => {
         let optionTitle = data;
         let optionVal = data;
