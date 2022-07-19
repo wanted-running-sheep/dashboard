@@ -6,6 +6,7 @@ const color = {
     primary: '#F6F7F8',
     white: '#FFFFFF',
     lightgray: '#ECEFF1',
+    navy: '#39474E',
   },
   graph: {
     blue: '#4FADF7',

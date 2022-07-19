@@ -1,11 +1,21 @@
 import { useState, useCallback } from 'react';
 import { MediaInterface } from 'request';
-import { mediaTitleType, formattedMediaInterface } from 'media';
+import {
+  mediaTitleType,
+  formattedMediaInterface,
+  mediaTitleKoreanType,
+} from 'media';
+
+import putCommaIntoNumber from '@/utils/putCommaIntoNumber';
+import { MEDIA_COLUMN_KOREAN } from '@/constants/media';
 
 type callType = 'graph' | 'all';
 
 const useFormattedMedia = (weeklyMedia: MediaInterface[]) => {
   const PERCENTAGE = 100;
+  const initNumberFormat = {
+    decimalPoint: 1,
+  };
 
   // 결과 값 반올림
   const roundSummary = (summary: number) => {
@@ -44,18 +54,33 @@ const useFormattedMedia = (weeklyMedia: MediaInterface[]) => {
 
       const summary =
         kakaoSummary + googleSummary + naverSummary + facebookSummary;
+      const koreanColumnName = MEDIA_COLUMN_KOREAN[
+        title
+      ] as mediaTitleKoreanType;
 
       if (type === 'all') {
         return {
-          name: title,
-          카카오: kakaoSummary,
-          네이버: naverSummary,
-          구글: googleSummary,
-          페이스북: facebookSummary,
+          name: koreanColumnName,
+          카카오: putCommaIntoNumber({
+            ...initNumberFormat,
+            number: kakaoSummary,
+          }),
+          네이버: putCommaIntoNumber({
+            ...initNumberFormat,
+            number: naverSummary,
+          }),
+          구글: putCommaIntoNumber({
+            ...initNumberFormat,
+            number: googleSummary,
+          }),
+          페이스북: putCommaIntoNumber({
+            ...initNumberFormat,
+            number: facebookSummary,
+          }),
         };
       }
       return {
-        name: title,
+        name: koreanColumnName,
         카카오: roundSummary((kakaoSummary / summary) * PERCENTAGE),
         네이버: roundSummary((naverSummary / summary) * PERCENTAGE),
         구글: roundSummary((googleSummary / summary) * PERCENTAGE),
