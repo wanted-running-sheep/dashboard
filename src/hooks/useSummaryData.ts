@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ReportInterface } from 'request';
 
 interface SummaryData {
@@ -6,8 +6,12 @@ interface SummaryData {
   summary: string;
 }
 
-const useSummaryData = () => {
+const useSummaryData = (data: ReportInterface[]) => {
   const [summaryData, setSummaryData] = useState<SummaryData[]>([]);
+
+  useEffect(() => {
+    organizeSummaryData(data);
+  }, [JSON.stringify(data)]);
 
   const organizeSummaryData = (weekData: ReportInterface[]) => {
     const totalDataSize = weekData.length;
@@ -64,8 +68,6 @@ const useSummaryData = () => {
 
   return {
     summaryData,
-    setSummaryData,
-    organizeSummaryData,
   };
 };
 

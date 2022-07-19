@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
   CartesianGrid,
   Legend,
@@ -19,11 +19,7 @@ interface AdvertisingStatusProps {
 }
 
 const AdvertisingStatus = ({ data }: AdvertisingStatusProps) => {
-  const { summaryData, organizeSummaryData } = useSummaryData();
-
-  useEffect(() => {
-    organizeSummaryData(data);
-  }, [JSON.stringify(data)]);
+  const { summaryData } = useSummaryData(data);
 
   return (
     <Report title="통합 광고 현황">
