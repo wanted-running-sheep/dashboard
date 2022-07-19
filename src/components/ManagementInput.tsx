@@ -1,23 +1,37 @@
-import React from 'react';
+import React, { useState, memo } from 'react';
 import styled from 'styled-components';
 
 interface ManagementInputProps {
   title: string;
   value: string;
+  inputName: string;
+  onChangeInput: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const ManagementInput = ({ title, value }: ManagementInputProps) => {
+const ManagementInput = ({
+  title,
+  value,
+  inputName,
+  onChangeInput,
+}: ManagementInputProps) => {
+  const [inputValue, setInputValue] = useState(value);
+
   return (
     <InputWrapper>
       <Label>{title}</Label>
       <InputContainer>
-        <Input type="text" value={value} />
+        <Input
+          type="text"
+          value={inputValue}
+          onChange={onChangeInput}
+          name={inputName}
+        />
       </InputContainer>
     </InputWrapper>
   );
 };
 
-export default ManagementInput;
+export default memo(ManagementInput);
 
 const InputWrapper = styled.div`
   display: flex;
@@ -28,6 +42,7 @@ const InputWrapper = styled.div`
 const Label = styled.label`
   width: 30%;
   color: ${({ theme }) => theme.color.font.lightgray};
+  font-size: 14px;
 `;
 
 const InputContainer = styled.div`

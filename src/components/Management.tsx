@@ -1,41 +1,38 @@
+import React, { useRef, useState } from 'react';
 import { MANAGEMENT_STATUS } from '@/constants';
 import { format } from 'date-fns';
-import React from 'react';
 import { AdvertisementInterface } from 'request';
 import styled from 'styled-components';
 import ManagementForm from './ManagementForm';
 import ManagementHeader from './ManagementHeader';
+import makePropsAdvertisement from '@/utils/makePropsAdvertisement';
 
 interface ManagementProps {
   advertisements: AdvertisementInterface[];
 }
 
 const Management = ({ advertisements }: ManagementProps) => {
-  const DATE_FORMAT = 'yyyy-MM-dd';
+  const [isNewForm, setIsNewForm] = useState(false);
+
+  const formContainerRef = useRef<HTMLDivElement>(null);
+
+  const onClickNewForm = () => {
+    setIsNewForm((prevState) => !prevState);
+    formContainerRef.current?.scrollTo({ top: 0 });
+  };
+
   return (
     <Wrapper>
-      <ManagementHeader />
-      <FormContainer>
+      <ManagementHeader onClickNewForm={onClickNewForm} />
+
+      <FormContainer ref={formContainerRef}>
+        {isNewForm && <ManagementForm isNewForm={isNewForm} />}
         {advertisements.map((advertisement) => {
-          const startDate = format(
-            new Date(advertisement.startDate),
-            DATE_FORMAT
-          );
-
-          const propsAdverTisement = {
-            title: advertisement.title,
-            status: MANAGEMENT_STATUS[advertisement.status],
-            startDate,
-            budget: advertisement.budget,
-            roas: `${advertisement.report.roas} %`,
-            convValue: advertisement.report.convValue,
-            cost: advertisement.report.cost,
-          };
-
           return (
             <ManagementForm
               key={advertisement.id}
-              advertisement={propsAdverTisement}
+              advertisement={makePropsAdvertisement(advertisement)}
+              isNewForm={isNewForm}
             />
           );
         })}
