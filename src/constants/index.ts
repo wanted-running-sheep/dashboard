@@ -13,3 +13,8 @@ export const MANAGEMENT_STATUS: { [key: string]: string } = {
   active: '진행중',
   ended: '종료',
 };
+
+export const MANAGEMENT_STATUS_KOR_TO_ENG: { [key: string]: string } = {
+  진행중: 'active',
+  종료: 'ended',
+};

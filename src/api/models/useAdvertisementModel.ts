@@ -17,9 +17,13 @@ export const useAdvertisementModel = () => {
     const response = await apiRequest.get('/advertisements');
     updateAdvertisements(response);
   };
+  const patchAdvertisements = async <T>(id: number, data: T) => {
+    return await apiRequest.patch('/advertisements', id, data);
+  };
 
   return {
     advertisements,
     getAdvertisements,
+    patchAdvertisements,
   };
 };
