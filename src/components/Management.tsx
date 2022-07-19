@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import ManagementForm from './ManagementForm';
 import ManagementHeader from './ManagementHeader';
 import makePropsAdvertisement from '@/utils/makePropsAdvertisement';
+import getNewId from '@/utils/getNewId';
 
 interface ManagementProps {
   advertisements: AdvertisementInterface[];
@@ -13,6 +14,7 @@ interface ManagementProps {
 
 const Management = ({ advertisements }: ManagementProps) => {
   const [isNewForm, setIsNewForm] = useState(false);
+  const newId = getNewId(advertisements);
 
   const formContainerRef = useRef<HTMLDivElement>(null);
 
@@ -23,10 +25,10 @@ const Management = ({ advertisements }: ManagementProps) => {
 
   return (
     <Wrapper>
-      <ManagementHeader onClickNewForm={onClickNewForm} />
+      <ManagementHeader onClickNewForm={onClickNewForm} isNewForm={isNewForm}/>
 
       <FormContainer ref={formContainerRef}>
-        {isNewForm && <ManagementForm />}
+        {isNewForm && <ManagementForm newId={newId}/>}
         {advertisements.map((advertisement) => {
           return (
             <ManagementForm

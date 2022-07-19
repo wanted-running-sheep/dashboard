@@ -1,16 +1,26 @@
-import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
+import React, {
+  ChangeEvent,
+  FormEvent,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { MANAGEMENT_INPUT_TITLE } from '@/constants';
 import getCommaLocalString from '@/utils/getCommaLocalString';
 import styled from 'styled-components';
 import ManagementInput from './ManagementInput';
+import adsFormValidate from '@/utils/adsFormValidate';
+import { AdvertisementInterface } from 'request';
+import { format } from 'date-fns';
 
 interface ManagementFormProps {
   advertisement?: { [key: string]: string | number };
+  newId?: number;
 }
-const ManagementForm = ({ advertisement }: ManagementFormProps) => {
+const ManagementForm = ({ advertisement, newId }: ManagementFormProps) => {
   const isNewForm = !advertisement;
   const [requestValue, setRequestValue] = useState<{
-    [key: string]: string;
+    [key: string]: string | number;
   }>({});
 
   const onChangeInput = (event: ChangeEvent<HTMLInputElement>) => {
@@ -21,12 +31,47 @@ const ManagementForm = ({ advertisement }: ManagementFormProps) => {
     }));
   };
 
-  console.log(requestValue);
+  const setPostReqVal = (
+    reqData: { [key: string]: string | number },
+    newId: number
+  ) => {
+    const postReqVal: AdvertisementInterface = {
+      id: newId,
+      adType: 'web',
+      title: reqData.title as string,
+      budget: reqData.budget as number,
+      status: 'active',
+      startDate: format(new Date(), 'yyyy-MM-dd'),
+      endDate: '2022-08-01',
+      report: {
+        cost: reqData.cost as number,
+        convValue: reqData.convValue as number,
+        roas: reqData.roas as number,
+      },
+    };
+
+    return postReqVal;
+  };
+
+  const onNewFormSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const { notValidationTitle, validation } = adsFormValidate(requestValue);
+
+    if (!validation) {
+      alert(`${notValidationTitle}은 필수 입력 값 입니다.`);
+    }
+
+    if (isNewForm && newId) {
+      const data = setPostReqVal(requestValue, newId);
+      console.log(data);
+    }
+  };
+
   return (
-    <Form>
+    <Form onSubmit={onNewFormSubmit}>
       <FormTitle>
         <Input
-          value={requestValue.title || ''}
+          value={isNewForm ? requestValue.title : advertisement.title}
           onChange={onChangeInput}
           placeholder="광고 제목"
           autoFocus={isNewForm}
@@ -34,6 +79,7 @@ const ManagementForm = ({ advertisement }: ManagementFormProps) => {
         />
       </FormTitle>
       {Object.keys(MANAGEMENT_INPUT_TITLE).map((inputName, i) => {
+        if (inputName === 'title') return;
         let title = MANAGEMENT_INPUT_TITLE[inputName];
         let value = !isNewForm && advertisement ? advertisement[inputName] : '';
 
@@ -46,7 +92,7 @@ const ManagementForm = ({ advertisement }: ManagementFormProps) => {
           <ManagementInput
             key={i}
             title={title}
-            value={isNewForm ? requestValue[inputName] : (value as string)}
+            value={(isNewForm ? requestValue[inputName] : value) as string}
             inputName={inputName}
             onChangeInput={onChangeInput}
           />
@@ -54,7 +100,9 @@ const ManagementForm = ({ advertisement }: ManagementFormProps) => {
       })}
 
       <ButtonWrapper>
-        <EditButton>수정하기</EditButton>
+        <EditButton type="submit">
+          {isNewForm ? '만들기' : '수정하기'}
+        </EditButton>
       </ButtonWrapper>
     </Form>
   );

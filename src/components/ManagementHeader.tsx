@@ -3,13 +3,19 @@ import styled from 'styled-components';
 
 interface ManagementHeaderProps {
   onClickNewForm: () => void;
+  isNewForm: boolean;
 }
 
-const ManagementHeader = ({ onClickNewForm }: ManagementHeaderProps) => {
+const ManagementHeader = ({
+  onClickNewForm,
+  isNewForm,
+}: ManagementHeaderProps) => {
   return (
     <Wrapper>
       <Button>전체 광고</Button>
-      <Button onClick={onClickNewForm}>광고 만들기</Button>
+      <Button onClick={onClickNewForm}>
+        {isNewForm ? '광고 만들기 취소' : '광고 만들기'}
+      </Button>
     </Wrapper>
   );
 };

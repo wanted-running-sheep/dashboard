@@ -1,6 +1,7 @@
 export const MANAGEMENT_INPUT_TITLE: {
   [key: string]: string;
 } = {
+  title: '제목',
   status: '상태',
   startDate: '광고 생성일',
   budget: '일 희망 예산',
