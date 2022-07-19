@@ -11,7 +11,7 @@ const makePropsAdvertisement = (advertisement: AdvertisementInterface) => {
     status: MANAGEMENT_STATUS[advertisement.status],
     startDate,
     budget: advertisement.budget,
-    roas: `${advertisement.report.roas} %`,
+    roas: advertisement.report.roas,
     convValue: advertisement.report.convValue,
     cost: advertisement.report.cost,
   };

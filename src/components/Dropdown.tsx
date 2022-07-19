@@ -2,20 +2,30 @@ import React from 'react';
 import styled from 'styled-components';
 
 interface DropdownProps {
-  getSpecificWeekData: (datesOfWeek: string) => void;
-  weekList: string[];
+  onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+  dataList: string[] | [string, string][];
+  defaultValue?: string;
+  optionValue?: string;
 }
 
-const Dropdown = ({ getSpecificWeekData, weekList }: DropdownProps) => {
-  const selectedWeekList = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedDate = event.target.value;
-    getSpecificWeekData(selectedDate);
-  };
-
+const Dropdown = ({ onChange, dataList }: DropdownProps) => {
   return (
-    <SelectList name="" onChange={selectedWeekList}>
-      {weekList.map((week, index) => {
-        return <option key={index}>{week}</option>;
+    <SelectList name="" onChange={onChange}>
+      {dataList.map((data, index) => {
+        let optionTitle = data;
+        let optionVal = data;
+
+        if (Array.isArray(data)) {
+          const [val, title] = data;
+          optionTitle = title;
+          optionVal = val;
+        }
+
+        return (
+          <option key={index} value={optionVal}>
+            {optionTitle}
+          </option>
+        );
       })}
     </SelectList>
   );

@@ -1,11 +1,20 @@
-import React, { useState } from 'react';
+import { MANAGEMENT_STATUS } from '@/constants';
+import { InputType } from '@/utils/makeViewData';
+import React from 'react';
 import styled from 'styled-components';
+import Dropdown from './Dropdown';
 
 interface ManagementInputProps {
   title: string;
   value: string;
   inputName: string;
-  onChangeInput: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onChangeInput: (
+    event:
+      | React.ChangeEvent<HTMLInputElement>
+      | React.ChangeEvent<HTMLSelectElement>
+  ) => void;
+  isNewForm: boolean;
+  onlyNumber: boolean;
 }
 
 const ManagementInput = ({
@@ -13,23 +22,32 @@ const ManagementInput = ({
   value,
   inputName,
   onChangeInput,
+  isNewForm,
 }: ManagementInputProps) => {
   return (
     <InputWrapper>
       <Label>{title}</Label>
       <InputContainer>
-        <Input
-          type="text"
-          value={value}
-          onChange={onChangeInput}
-          name={inputName}
-        />
+        {isNewForm && inputName === 'status' ? (
+          <Dropdown
+            dataList={Object.entries(MANAGEMENT_STATUS)}
+            onChange={onChangeInput}
+          />
+        ) : (
+          <Input
+            type="text"
+            value={value || ''}
+            onChange={onChangeInput}
+            name={inputName}
+            readOnly={!isNewForm}
+          />
+        )}
       </InputContainer>
     </InputWrapper>
   );
 };
 
-export default React.memo(ManagementInput);
+export default ManagementInput;
 
 const InputWrapper = styled.div`
   display: flex;

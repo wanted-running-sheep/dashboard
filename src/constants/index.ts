@@ -1,7 +1,5 @@
-export const MANAGEMENT_INPUT_TITLE: {
-  [key: string]: string;
-} = {
-  title: '제목',
+type DefaultObjType = { [key: string]: string };
+export const MANAGEMENT_INPUT_TITLE: DefaultObjType = {
   status: '상태',
   startDate: '광고 생성일',
   budget: '일 희망 예산',
@@ -10,7 +8,7 @@ export const MANAGEMENT_INPUT_TITLE: {
   cost: '광고 비용',
 };
 
-export const MANAGEMENT_STATUS: { [key: string]: string } = {
+export const MANAGEMENT_STATUS: DefaultObjType = {
   active: '진행중',
   ended: '종료',
 };

@@ -1,72 +1,61 @@
-import React, {
-  ChangeEvent,
-  FormEvent,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import React, { ChangeEvent, FormEvent, useState } from 'react';
 import { MANAGEMENT_INPUT_TITLE } from '@/constants';
-import getCommaLocalString from '@/utils/getCommaLocalString';
 import styled from 'styled-components';
 import ManagementInput from './ManagementInput';
 import adsFormValidate from '@/utils/adsFormValidate';
 import { AdvertisementInterface } from 'request';
-import { format } from 'date-fns';
 import { useAdvertisementModel } from '@/api/models/useAdvertisementModel';
+import setPostReqVal from '@/utils/setPostReqVal';
+import makeViewData, { checkNumberVale } from '@/utils/makeViewData';
 
 interface ManagementFormProps {
   advertisement?: { [key: string]: string | number };
-  newId?: number;
+  nextId?: number;
+  setIsNewForm?: React.Dispatch<React.SetStateAction<boolean>>;
+  setAdvertisementList?: React.Dispatch<
+    React.SetStateAction<AdvertisementInterface[]>
+  >;
 }
-const ManagementForm = ({ advertisement, newId }: ManagementFormProps) => {
+const ManagementForm = ({
+  advertisement,
+  nextId,
+  setIsNewForm,
+  setAdvertisementList,
+}: ManagementFormProps) => {
   const isNewForm = !advertisement;
   const { postAdvertisement } = useAdvertisementModel();
   const [requestValue, setRequestValue] = useState<{
     [key: string]: string | number;
-  }>({});
-
-  const onChangeInput = (event: ChangeEvent<HTMLInputElement>) => {
-    const { value, name } = event.target;
-    setRequestValue((prevInput) => ({
-      ...prevInput,
-      [name]: value,
-    }));
-  };
-
-  const setPostReqVal = (
-    reqData: { [key: string]: string | number },
-    newId: number
-  ) => {
-    const postReqVal: AdvertisementInterface = {
-      id: newId,
-      adType: 'web',
-      title: reqData.title as string,
-      budget: reqData.budget as number,
-      status: 'active',
-      startDate: format(new Date(reqData.startDate), 'yyyy-MM-dd'),
-      endDate: '2022-08-01',
-      report: {
-        cost: reqData.cost as number,
-        convValue: reqData.convValue as number,
-        roas: reqData.roas as number,
-      },
-    };
-
-    return postReqVal;
-  };
+  }>({ status: 'active' });
 
   const onNewFormSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const { notValidationTitle, validation } = adsFormValidate(requestValue);
 
     if (!validation) {
-      alert(`${notValidationTitle}은 필수 입력 값 입니다.`);
+      alert(`${notValidationTitle}값 은 필수 입력 값 입니다.`);
     }
 
-    if (isNewForm && newId) {
-      const postData = setPostReqVal(requestValue, newId);
+    if (isNewForm && nextId && setIsNewForm && setAdvertisementList) {
+      const postData = setPostReqVal(requestValue, nextId);
       postAdvertisement(postData);
+      setAdvertisementList((prevAds) => [...prevAds, postData]);
+      setIsNewForm((prevIsNewForm) => !prevIsNewForm);
     }
+  };
+
+  const onChangeInput = (
+    event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>
+  ) => {
+    let { value, name } = event.target;
+
+    if (checkNumberVale(name)) {
+      value = value.replace(/[^0-9]/g, '');
+    }
+    setRequestValue((prevInput) => ({
+      ...prevInput,
+      [name]: value,
+    }));
   };
 
   return (
@@ -80,23 +69,21 @@ const ManagementForm = ({ advertisement, newId }: ManagementFormProps) => {
           name="title"
         />
       </FormTitle>
-      {Object.keys(MANAGEMENT_INPUT_TITLE).map((inputName, i) => {
-        if (inputName === 'title') return;
-        let title = MANAGEMENT_INPUT_TITLE[inputName];
-        let value = !isNewForm && advertisement ? advertisement[inputName] : '';
-
-        if (typeof value === 'number' && value > 10000)
-          value = `${getCommaLocalString(Math.round(value / 10000))} 만원`;
-        if (typeof value === 'number' && value < 10000)
-          value = `${getCommaLocalString(Math.round(value))} 원`;
+      {Object.keys(MANAGEMENT_INPUT_TITLE).map((inputName) => {
+        const { title, value, onlyNumber } = makeViewData(
+          inputName,
+          advertisement
+        );
 
         return (
           <ManagementInput
-            key={i}
+            key={inputName}
             title={title}
             value={(isNewForm ? requestValue[inputName] : value) as string}
             inputName={inputName}
             onChangeInput={onChangeInput}
+            isNewForm={isNewForm}
+            onlyNumber={onlyNumber}
           />
         );
       })}
