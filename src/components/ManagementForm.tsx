@@ -3,72 +3,30 @@ import { MANAGEMENT_INPUT_TITLE } from '@/constants';
 import getCommaLocalString from '@/utils/getCommaLocalString';
 import styled from 'styled-components';
 import ManagementInput from './ManagementInput';
-import adsFormValidate from '@/utils/adsFormValidate';
-import { useAdvertisementModel } from '@/api/models/useAdvertisementModel';
 
 interface ManagementFormProps {
   advertisement?: { [key: string]: string | number };
-  newId?: number;
 }
-const ManagementForm = ({ advertisement, newId }: ManagementFormProps) => {
+const ManagementForm = ({ advertisement }: ManagementFormProps) => {
   const isNewForm = !advertisement;
-  const { postAdvertisement } = useAdvertisementModel();
-
   const [requestValue, setRequestValue] = useState<{
     [key: string]: string;
-  }>({ title: (advertisement ? advertisement.title : '') as string });
+  }>({});
 
   const onChangeInput = (event: ChangeEvent<HTMLInputElement>) => {
     const { value, name } = event.target;
-    console.log(name, value);
-    setRequestValue({ ...requestValue, [name]: value });
+    setRequestValue((prevInput) => ({
+      ...prevInput,
+      [name]: value,
+    }));
   };
 
-  const setPostReqVal = (
-    newId: number,
-    reqVal: {
-      [key: string]: string;
-    }
-  ) => {
-    let postReqVal: {
-      [key: string]: string | number | { [key: string]: string | number };
-    } = { newId };
-
-    for (const [key, val] of Object.entries(reqVal)) {
-      if (!(advertisement && advertisement.hasOwnProperty(key))) {
-        postReqVal = {
-          ...postReqVal,
-          report: { [key]: val },
-        };
-      } else {
-        postReqVal = {
-          ...postReqVal,
-          [key]: val,
-        };
-      }
-    }
-
-    return postReqVal;
-  };
-
-  const onAdvertisementSubmit = () => {
-    const { notValidationTitle, validation } = adsFormValidate(requestValue);
-
-    if (!validation) {
-      alert(`${notValidationTitle}은 필수 입력 값입니다.`);
-      return;
-    }
-
-    if (isNewForm && newId) {
-      console.log(setPostReqVal(newId, requestValue));
-    }
-  };
-
+  console.log(requestValue);
   return (
-    <Form onSubmit={onAdvertisementSubmit}>
+    <Form>
       <FormTitle>
         <Input
-          value={requestValue.title}
+          value={requestValue.title || ''}
           onChange={onChangeInput}
           placeholder="광고 제목"
           autoFocus={isNewForm}
@@ -86,7 +44,7 @@ const ManagementForm = ({ advertisement, newId }: ManagementFormProps) => {
 
         return (
           <ManagementInput
-            key={inputName}
+            key={i}
             title={title}
             value={isNewForm ? requestValue[inputName] : (value as string)}
             inputName={inputName}
@@ -96,7 +54,7 @@ const ManagementForm = ({ advertisement, newId }: ManagementFormProps) => {
       })}
 
       <ButtonWrapper>
-        <EditButton>{isNewForm ? '만들기' : '수정하기'}</EditButton>
+        <EditButton>수정하기</EditButton>
       </ButtonWrapper>
     </Form>
   );
