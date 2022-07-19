@@ -1,15 +1,28 @@
-import React from 'react';
+import { MANAGEMENT_STATUS } from '@/constants';
+import React, { ChangeEvent } from 'react';
 import styled from 'styled-components';
+import Dropdown from './Dropdown';
 
 interface ManagementHeaderProps {
   onClickNewForm: () => void;
+  isNewForm: boolean;
+  onChangeStatus: (event: React.ChangeEvent<HTMLSelectElement>) => void;
 }
 
-const ManagementHeader = ({ onClickNewForm }: ManagementHeaderProps) => {
+const ManagementHeader = ({
+  onClickNewForm,
+  isNewForm,
+  onChangeStatus,
+}: ManagementHeaderProps) => {
   return (
     <Wrapper>
-      <Button>전체 광고</Button>
-      <Button onClick={onClickNewForm}>광고 만들기</Button>
+      <Dropdown
+        dataList={[['all', '전체광고'], ...Object.entries(MANAGEMENT_STATUS)]}
+        onChange={onChangeStatus}
+      />
+      <Button onClick={onClickNewForm}>
+        {isNewForm ? '광고 만들기 취소' : '광고 만들기'}
+      </Button>
     </Wrapper>
   );
 };

@@ -1,35 +1,91 @@
-import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
+import React, { ChangeEvent, FormEvent, useState } from 'react';
 import {
-  MANAGEMENT_INPUT_TITLE,
-  MANAGEMENT_STATUS_KOR_TO_ENG,
   BUTTON_TYPE,
+  DEFAULT_DATE_FORMAT,
+  MANAGEMENT_INPUT_TITLE,
+  MANAGEMENT_STATUS,
+  MANAGEMENT_STATUS_KOR_TO_ENG,
   MSG_UPDATE_COMPLETE,
   MSG_UPDATE_FAILED,
 } from '@/constants';
-import getCommaLocalString from '@/utils/getCommaLocalString';
 import styled from 'styled-components';
 import ManagementInput from './ManagementInput';
 import CalendarInput from './CalendarInput';
 import { useAdvertisementModel } from '@/api/models/useAdvertisementModel';
 import { AdvertisementDataType, AdvertisementUpdateDataType } from 'request';
+import adsFormValidate from '@/utils/adsFormValidate';
+import { AdvertisementInterface } from 'request';
+import setPostReqVal from '@/utils/setPostReqVal';
+import makeViewData, { checkNumberVale } from '@/utils/makeViewData';
+import { format } from 'date-fns';
+import Dropdown from './Dropdown';
 
 interface ManagementFormProps {
   advertisement?: AdvertisementDataType;
-  isNewForm: boolean;
+  nextId?: number;
+  setIsNewForm?: React.Dispatch<React.SetStateAction<boolean>>;
+  setAdvertisementList?: React.Dispatch<
+    React.SetStateAction<AdvertisementInterface[]>
+  >;
+  setAdvertisementsForRender?: React.Dispatch<
+    React.SetStateAction<AdvertisementInterface[]>
+  >;
 }
 
-const ManagementForm = ({ advertisement, isNewForm }: ManagementFormProps) => {
-  const [title, setTitle] = useState(advertisement ? advertisement.title : '');
+const ManagementForm = ({
+  advertisement,
+  nextId,
+  setIsNewForm,
+  setAdvertisementList,
+  setAdvertisementsForRender,
+}: ManagementFormProps) => {
+  const isNewForm = !advertisement;
+
+  const { postAdvertisement } = useAdvertisementModel();
   const [isReadOnly, setIsReadOnly] = useState<boolean>(true);
   const [requestValue, setRequestValue] = useState<AdvertisementDataType>({
     ...advertisement,
+    status: isNewForm ? 'active' : advertisement.status,
+    startDate: isNewForm
+      ? format(new Date(), DEFAULT_DATE_FORMAT)
+      : advertisement.startDate,
   });
+
   const { patchAdvertisements } = useAdvertisementModel();
 
-  const titleRef = useRef<HTMLInputElement>(null);
+  const onNewFormSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const { notValidationTitle, validation } = adsFormValidate(requestValue);
+    const VALIDATION_MESSAGE = `${notValidationTitle}값 은 필수 입력 값 입니다.`;
+    if (!validation) {
+      alert(VALIDATION_MESSAGE);
+      return;
+    }
 
-  const onChangeInput = (event: ChangeEvent<HTMLInputElement>) => {
-    const { value, name } = event.target;
+    if (
+      isNewForm &&
+      nextId &&
+      setIsNewForm &&
+      setAdvertisementList &&
+      setAdvertisementsForRender
+    ) {
+      const postData = setPostReqVal(requestValue, nextId);
+      postAdvertisement(postData);
+      setAdvertisementList((prevAds) => [...prevAds, postData]);
+      setAdvertisementsForRender((prevAds) => [...prevAds, postData]);
+      setIsNewForm((prevIsNewForm) => !prevIsNewForm);
+    }
+  };
+
+  const onChangeInput = (
+    event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>
+  ) => {
+    let { value, name } = event.target;
+
+    console.log(name, value);
+    if (checkNumberVale(name)) {
+      value = value.replace(/[^0-9]/g, '');
+    }
     setRequestValue((prevInput) => ({
       ...prevInput,
       [name]: value,
@@ -47,7 +103,10 @@ const ManagementForm = ({ advertisement, isNewForm }: ManagementFormProps) => {
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
     event.preventDefault();
-    setIsReadOnly((prevState) => !prevState);
+    setIsReadOnly((prevState) => {
+      if (!prevState) setRequestValue({ ...advertisement });
+      return !prevState;
+    });
   };
 
   const getNumberWithoutPercent = (strValue: string | number): number => {
@@ -58,12 +117,11 @@ const ManagementForm = ({ advertisement, isNewForm }: ManagementFormProps) => {
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
     event.preventDefault();
-
     // 데이터 가공 필요
     const requestData: AdvertisementUpdateDataType = {
       id: Number(requestValue.id),
       title: String(requestValue.title),
-      status: MANAGEMENT_STATUS_KOR_TO_ENG[requestValue.status],
+      status: String(requestValue.status),
       budget: Number(requestValue.budget),
       startDate: String(requestValue.startDate),
       report: {
@@ -86,35 +144,49 @@ const ManagementForm = ({ advertisement, isNewForm }: ManagementFormProps) => {
   };
 
   return (
-    <Form>
+    <Form onSubmit={onNewFormSubmit}>
       <FormTitle>
         <Input
-          value={requestValue.title || ''}
+          value={isNewForm ? requestValue.title : advertisement.title}
           onChange={onChangeInput}
-          ref={titleRef}
           placeholder="광고 제목"
           autoFocus={isNewForm}
           name="title"
-          readOnly={isReadOnly}
+          readOnly={!isNewForm && isReadOnly}
         />
       </FormTitle>
-      {Object.keys(MANAGEMENT_INPUT_TITLE).map((inputName, index) => {
-        let title = MANAGEMENT_INPUT_TITLE[inputName];
-        let value =
-          !isNewForm && requestValue ? String(requestValue[inputName]) : '';
+      {Object.keys(MANAGEMENT_INPUT_TITLE).map((inputName) => {
+        const { title, value, onlyNumber } = makeViewData({
+          inputName,
+          advertisement,
+          isReadOnly,
+          requestValue,
+          isNewForm,
+        });
 
-        if (typeof value === 'number' && value > 10000)
-          value = `${getCommaLocalString(Math.round(value / 10000))} 만원`;
-        if (typeof value === 'number' && value < 10000)
-          value = `${getCommaLocalString(Math.round(value))} 원`;
+        if (inputName === 'status' && (isNewForm || !isReadOnly)) {
+          return (
+            <ManagementInput key={inputName} title={title}>
+              <Dropdown
+                key={inputName}
+                dataList={Object.entries(MANAGEMENT_STATUS)}
+                onChange={onChangeInput}
+                name={inputName}
+                defaultValue={MANAGEMENT_STATUS_KOR_TO_ENG[value]}
+              />
+            </ManagementInput>
+          );
+        }
 
         if (inputName === 'startDate') {
           return (
             <CalendarInput
-              key={index}
+              key={inputName}
               title={title}
-              date={value}
-              disabled={isReadOnly}
+              date={
+                isNewForm ? format(new Date(), 'yyyy-MM-dd') : (value as string)
+              }
+              disabled={!isNewForm && isReadOnly}
               inputName={inputName}
               onChangeCalendar={onChangeCalendar}
             />
@@ -122,19 +194,24 @@ const ManagementForm = ({ advertisement, isNewForm }: ManagementFormProps) => {
         }
 
         return (
-          <ManagementInput
-            key={index}
-            title={title}
-            value={value}
-            inputName={inputName}
-            onChangeInput={onChangeInput}
-            isReadOnly={isReadOnly}
-          />
+          <ManagementInput key={inputName} title={title}>
+            <Input
+              type="text"
+              value={value || ''}
+              onChange={onChangeInput}
+              name={inputName}
+              readOnly={!isNewForm && isReadOnly}
+            />
+          </ManagementInput>
         );
       })}
 
       <ButtonWrapper>
-        {isReadOnly ? (
+        {isNewForm ? (
+          <EditButton type="submit" buttonType={BUTTON_TYPE.EDIT}>
+            만들기
+          </EditButton>
+        ) : isReadOnly ? (
           <EditButton
             onClick={clickedEditAndCacnelButton}
             buttonType={BUTTON_TYPE.EDIT}

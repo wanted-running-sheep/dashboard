@@ -1,6 +1,5 @@
-export const MANAGEMENT_INPUT_TITLE: {
-  [key: string]: string;
-} = {
+type DefaultObjType = { [key: string]: string };
+export const MANAGEMENT_INPUT_TITLE: DefaultObjType = {
   status: '상태',
   startDate: '광고 생성일',
   budget: '일 희망 예산',
@@ -9,7 +8,7 @@ export const MANAGEMENT_INPUT_TITLE: {
   cost: '광고 비용',
 };
 
-export const MANAGEMENT_STATUS: { [key: string]: string } = {
+export const MANAGEMENT_STATUS: DefaultObjType = {
   active: '진행중',
   ended: '종료',
 };
@@ -28,3 +27,5 @@ export const BUTTON_TYPE = {
 export const MSG_UPDATE_COMPLETE = '수정 완료 하였습니다.';
 export const MSG_UPDATE_FAILED =
   '수정 실패 하였습니다. 지속 발생할 경우 관리자에게 문의주세요.';
+
+export const DEFAULT_DATE_FORMAT = 'yyyy-MM-dd';

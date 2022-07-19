@@ -14,11 +14,15 @@ const DashboardPage = () => {
     getTotalChartData,
   } = useTotalDataManagement();
 
-  const getSpecificWeekData = (datesOfWeek: string) => {
-    setSelectedDate(datesOfWeek);
+  const onChangeSelectedDate = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    const selectedDate = event.target.value;
+    setSelectedDate(selectedDate);
   };
 
   useEffect(() => {
+    console.log('dashboard render');
     getTotalChartData();
   }, []);
 
@@ -28,8 +32,8 @@ const DashboardPage = () => {
     <>
       <Title>
         <Dropdown
-          getSpecificWeekData={getSpecificWeekData}
-          weekList={Object.keys(totalWeeklyChartData)}
+          onChange={onChangeSelectedDate}
+          dataList={Object.keys(totalWeeklyChartData)}
         />
       </Title>
 
