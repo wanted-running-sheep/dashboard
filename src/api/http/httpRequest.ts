@@ -14,6 +14,10 @@ export class HttpRequest {
     });
   }
 
+  post<T>(url: ApiUrlType, data: T) {
+    return this.service.post(`${url}`, data).catch(console.log);
+  }
+
   patch<T>(id: number, data: T) {
     return this.service.patch(`/${id}`, data);
   }

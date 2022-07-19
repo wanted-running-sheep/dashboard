@@ -1,11 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const ManagementHeader = () => {
+interface ManagementHeaderProps {
+  onClickNewForm: () => void;
+}
+
+const ManagementHeader = ({ onClickNewForm }: ManagementHeaderProps) => {
   return (
     <Wrapper>
       <Button>전체 광고</Button>
-      <Button>광고 만들기</Button>
+      <Button onClick={onClickNewForm}>광고 만들기</Button>
     </Wrapper>
   );
 };

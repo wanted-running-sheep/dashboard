@@ -1,20 +1,45 @@
+import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { MANAGEMENT_INPUT_TITLE } from '@/constants';
 import getCommaLocalString from '@/utils/getCommaLocalString';
-import React from 'react';
-import { AdvertisementInterface } from 'request';
 import styled from 'styled-components';
 import ManagementInput from './ManagementInput';
 
 interface ManagementFormProps {
-  advertisement: { [key: string]: string | number };
+  advertisement?: { [key: string]: string | number };
+  isNewForm: boolean;
 }
-const ManagementForm = ({ advertisement }: ManagementFormProps) => {
+const ManagementForm = ({ advertisement, isNewForm }: ManagementFormProps) => {
+  const [title, setTitle] = useState(advertisement ? advertisement.title : '');
+  const [requestValue, setRequestValue] = useState<{
+    [key: string]: string | number;
+  }>({});
+
+  const titleRef = useRef<HTMLInputElement>(null);
+
+  const onChangeInput = (event: ChangeEvent<HTMLInputElement>) => {
+    const { value, name } = event.target;
+    setRequestValue((prevInput) => ({
+      ...prevInput,
+      [name]: value,
+    }));
+  };
+
+  console.log(requestValue);
   return (
     <Form>
-      <FormTitle>{advertisement.title}</FormTitle>
-      {Object.keys(MANAGEMENT_INPUT_TITLE).map((inputTitle, i) => {
-        let title = MANAGEMENT_INPUT_TITLE[inputTitle];
-        let value = advertisement[inputTitle];
+      <FormTitle>
+        <Input
+          value={requestValue.title || ''}
+          onChange={onChangeInput}
+          ref={titleRef}
+          placeholder="광고 제목"
+          autoFocus={isNewForm}
+          name="title"
+        />
+      </FormTitle>
+      {Object.keys(MANAGEMENT_INPUT_TITLE).map((inputName, i) => {
+        let title = MANAGEMENT_INPUT_TITLE[inputName];
+        let value = !isNewForm && advertisement ? advertisement[inputName] : '';
 
         if (typeof value === 'number' && value > 10000)
           value = `${getCommaLocalString(Math.round(value / 10000))} 만원`;
@@ -22,7 +47,13 @@ const ManagementForm = ({ advertisement }: ManagementFormProps) => {
           value = `${getCommaLocalString(Math.round(value))} 원`;
 
         return (
-          <ManagementInput key={i} title={title} value={value as string} />
+          <ManagementInput
+            key={i}
+            title={title}
+            value={value as string}
+            inputName={inputName}
+            onChangeInput={onChangeInput}
+          />
         );
       })}
 
