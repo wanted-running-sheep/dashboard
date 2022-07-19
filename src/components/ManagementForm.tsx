@@ -7,6 +7,7 @@ import {
 import getCommaLocalString from '@/utils/getCommaLocalString';
 import styled from 'styled-components';
 import ManagementInput from './ManagementInput';
+import CalendarInput from './CalendarInput';
 import { useAdvertisementModel } from '@/api/models/useAdvertisementModel';
 import { AdvertisementDataType, AdvertisementUpdateDataType } from 'request';
 
@@ -27,6 +28,13 @@ const ManagementForm = ({ advertisement, isNewForm }: ManagementFormProps) => {
 
   const onChangeInput = (event: ChangeEvent<HTMLInputElement>) => {
     const { value, name } = event.target;
+    setRequestValue((prevInput) => ({
+      ...prevInput,
+      [name]: value,
+    }));
+  };
+
+  const onChangeCalendar = (name: string, value: string) => {
     setRequestValue((prevInput) => ({
       ...prevInput,
       [name]: value,
@@ -97,6 +105,19 @@ const ManagementForm = ({ advertisement, isNewForm }: ManagementFormProps) => {
           value = `${getCommaLocalString(Math.round(value / 10000))} 만원`;
         if (typeof value === 'number' && value < 10000)
           value = `${getCommaLocalString(Math.round(value))} 원`;
+
+        if (inputName === 'startDate') {
+          return (
+            <CalendarInput
+              key={i}
+              title={title}
+              date={value}
+              disabled={isReadOnly}
+              inputName={inputName}
+              onChangeCalendar={onChangeCalendar}
+            />
+          );
+        }
 
         return (
           <ManagementInput
