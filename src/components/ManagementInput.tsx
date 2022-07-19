@@ -1,4 +1,4 @@
-import React, { useState, memo } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 interface ManagementInputProps {
@@ -14,15 +14,13 @@ const ManagementInput = ({
   inputName,
   onChangeInput,
 }: ManagementInputProps) => {
-  const [inputValue, setInputValue] = useState(value);
-
   return (
     <InputWrapper>
       <Label>{title}</Label>
       <InputContainer>
         <Input
           type="text"
-          value={inputValue}
+          value={value}
           onChange={onChangeInput}
           name={inputName}
         />
@@ -31,7 +29,7 @@ const ManagementInput = ({
   );
 };
 
-export default memo(ManagementInput);
+export default React.memo(ManagementInput);
 
 const InputWrapper = styled.div`
   display: flex;

@@ -29,7 +29,7 @@ declare module 'request' {
   //
   interface AdvertisementInterface {
     id: number;
-    adType: string;
+    adType: 'web' | 'app';
     title: string;
     budget: number;
     status: string;

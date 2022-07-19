@@ -1,11 +1,10 @@
 import React, { useRef, useState } from 'react';
-import { MANAGEMENT_STATUS } from '@/constants';
-import { format } from 'date-fns';
 import { AdvertisementInterface } from 'request';
 import styled from 'styled-components';
 import ManagementForm from './ManagementForm';
 import ManagementHeader from './ManagementHeader';
 import makePropsAdvertisement from '@/utils/makePropsAdvertisement';
+import getNewId from '@/utils/getNewId';
 
 interface ManagementProps {
   advertisements: AdvertisementInterface[];
@@ -26,13 +25,12 @@ const Management = ({ advertisements }: ManagementProps) => {
       <ManagementHeader onClickNewForm={onClickNewForm} />
 
       <FormContainer ref={formContainerRef}>
-        {isNewForm && <ManagementForm isNewForm={isNewForm} />}
+        {isNewForm && <ManagementForm newId={getNewId(advertisements)} />}
         {advertisements.map((advertisement) => {
           return (
             <ManagementForm
               key={advertisement.id}
               advertisement={makePropsAdvertisement(advertisement)}
-              isNewForm={isNewForm}
             />
           );
         })}
