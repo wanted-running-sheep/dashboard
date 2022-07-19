@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ReportInterface } from 'request';
+import putCommaIntoNumber from '@/utils/putCommaIntoNumber';
 
 interface SummaryData {
   title: string;
@@ -51,19 +52,34 @@ const useSummaryData = (data: ReportInterface[]) => {
 
   const getKoreanUnit = (value: number): string => {
     const length = value.toFixed(0).length;
-    const regex = /\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g;
+    const initNumberFormat = {
+      number: value,
+      decimalPoint: 0,
+      unit: '',
+    };
+    let formattedValue = '';
 
     if (length < 5) {
       // 1 단위
-      return value.toString().replace(regex, ',');
+      formattedValue = putCommaIntoNumber({ ...initNumberFormat });
     } else if (length < 9) {
       // 만 단위
-      const formattedValue = (value / 10 ** 4).toFixed(0).replace(regex, ',');
-      return `${formattedValue}만`;
+      formattedValue = putCommaIntoNumber({
+        ...initNumberFormat,
+        number: value / 10 ** 4,
+        unit: '만',
+      });
+    } else {
+      // 억 단위
+      formattedValue = putCommaIntoNumber({
+        ...initNumberFormat,
+        number: value / 10 ** 8,
+        decimalPoint: 1,
+        unit: '억',
+      });
     }
-    // 억 단위
-    const formattedValue = (value / 10 ** 8).toFixed(1).replace(regex, ',');
-    return `${formattedValue}억`;
+
+    return formattedValue;
   };
 
   return {
