@@ -2,6 +2,7 @@ import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
 import {
   MANAGEMENT_INPUT_TITLE,
   MANAGEMENT_STATUS_KOR_TO_ENG,
+  BUTTON_TYPE,
 } from '@/constants';
 import getCommaLocalString from '@/utils/getCommaLocalString';
 import styled from 'styled-components';
@@ -61,11 +62,16 @@ const ManagementForm = ({ advertisement, isNewForm }: ManagementFormProps) => {
         roas: getNumberWithoutPercent(requestValue.roas),
       },
     };
+    try {
+      await patchAdvertisements<AdvertisementUpdateDataType>(
+        requestData.id,
+        requestData
+      );
+      alert('수정 완료 하였습니다');
+    } catch (error) {
+      alert('수정 실패 하였습니다. 지속 발생할 경우 관리자에게 문의주세요.');
+    }
 
-    await patchAdvertisements<AdvertisementUpdateDataType>(
-      requestData.id,
-      requestData
-    );
     setIsReadOnly((prevState) => !prevState);
   };
 
@@ -106,13 +112,24 @@ const ManagementForm = ({ advertisement, isNewForm }: ManagementFormProps) => {
 
       <ButtonWrapper>
         {isReadOnly ? (
-          <EditButton onClick={clickedEditAndCacnelButton}>수정하기</EditButton>
+          <EditButton
+            onClick={clickedEditAndCacnelButton}
+            buttonType={BUTTON_TYPE.EDIT}
+          >
+            수정하기
+          </EditButton>
         ) : (
           <>
-            <EditButton onClick={clickedEditCompleteButton}>
+            <EditButton
+              onClick={clickedEditCompleteButton}
+              buttonType={BUTTON_TYPE.COMPLETE}
+            >
               수정완료
             </EditButton>
-            <EditButton onClick={clickedEditAndCacnelButton}>
+            <EditButton
+              onClick={clickedEditAndCacnelButton}
+              buttonType={BUTTON_TYPE.CANCEL}
+            >
               수정취소
             </EditButton>
           </>
@@ -148,11 +165,20 @@ const ButtonWrapper = styled.div`
   padding: 30px 0px 30px 0px;
 `;
 
-const EditButton = styled.button`
+const EditButton = styled.button<{ buttonType: string }>`
   padding: 10px 20px 10px 20px;
-  background-color: ${({ theme }) => theme.color.background.white};
+  background-color: ${({ theme, buttonType }) => {
+    if (buttonType === BUTTON_TYPE.EDIT) {
+      return theme.color.background.white;
+    } else if (buttonType === BUTTON_TYPE.COMPLETE) {
+      return theme.color.button.blue;
+    } else if (buttonType === BUTTON_TYPE.CANCEL) {
+      return theme.color.button.red;
+    }
+  }};
   border: 1px solid ${({ theme }) => theme.color.border.lightgray};
   border-radius: 10px;
   font-weight: bold;
   font-size: 16px;
+  margin-right: 1rem;
 `;

@@ -18,3 +18,9 @@ export const MANAGEMENT_STATUS_KOR_TO_ENG: { [key: string]: string } = {
   진행중: 'active',
   종료: 'ended',
 };
+
+export const BUTTON_TYPE = {
+  EDIT: 'edit',
+  COMPLETE: 'complete',
+  CANCEL: 'cancel',
+};
