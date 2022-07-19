@@ -5183,18 +5183,18 @@
       }
     },
     {
+      "id": 5,
       "adType": "web",
       "title": "test광고yay~",
       "budget": 111133,
       "status": "ended",
-      "startDatae": "2022-07-14",
+      "startDate": "2022-07-14",
       "endDate": "2022-07-22",
       "report": {
-        "const": 4444,
+        "cost": 4444,
         "convValue": 66666,
         "roas": 877
-      },
-      "id": 5
+      }
     }
   ]
 }

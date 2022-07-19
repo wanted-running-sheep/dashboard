@@ -21,7 +21,7 @@ declare module 'request' {
   }
 
   interface AdvertisementReportInterface {
-    const: number;
+    cost: number;
     convValue: number;
     roas: number;
   }
@@ -33,7 +33,7 @@ declare module 'request' {
     title: string;
     budget: number;
     status: string;
-    startDatae: string;
+    startDate: string;
     endDate: string | null;
     report: AdvertisementReportInterface;
   }
