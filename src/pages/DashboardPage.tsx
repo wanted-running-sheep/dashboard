@@ -32,8 +32,9 @@ const DashboardPage = () => {
           weekList={Object.keys(totalWeeklyChartData)}
         />
       </Title>
+
       <AdvertisingStatus data={totalWeeklyChartData[selectedDate].reports} />
-      <MediaStatus />
+      <MediaStatus data={totalWeeklyChartData[selectedDate].media} />
     </>
   );
 };
