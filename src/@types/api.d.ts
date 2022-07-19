@@ -66,4 +66,21 @@ declare module 'request' {
       media: MediaInterface[];
     };
   }
+
+  interface AdvertisementDataType {
+    [key: string]: string | number;
+  }
+
+  interface AdvertisementUpdateDataType {
+    id: number;
+    title: string;
+    status: string;
+    budget: number;
+    startDate: string;
+    report: {
+      cost: number;
+      convValue: number;
+      roas: number;
+    };
+  }
 }

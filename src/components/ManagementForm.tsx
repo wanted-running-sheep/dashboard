@@ -1,18 +1,30 @@
 import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
-import { MANAGEMENT_INPUT_TITLE } from '@/constants';
+import {
+  MANAGEMENT_INPUT_TITLE,
+  MANAGEMENT_STATUS_KOR_TO_ENG,
+  BUTTON_TYPE,
+  MSG_UPDATE_COMPLETE,
+  MSG_UPDATE_FAILED,
+} from '@/constants';
 import getCommaLocalString from '@/utils/getCommaLocalString';
 import styled from 'styled-components';
 import ManagementInput from './ManagementInput';
+import CalendarInput from './CalendarInput';
+import { useAdvertisementModel } from '@/api/models/useAdvertisementModel';
+import { AdvertisementDataType, AdvertisementUpdateDataType } from 'request';
 
 interface ManagementFormProps {
-  advertisement?: { [key: string]: string | number };
+  advertisement?: AdvertisementDataType;
   isNewForm: boolean;
 }
+
 const ManagementForm = ({ advertisement, isNewForm }: ManagementFormProps) => {
   const [title, setTitle] = useState(advertisement ? advertisement.title : '');
-  const [requestValue, setRequestValue] = useState<{
-    [key: string]: string | number;
-  }>({});
+  const [isReadOnly, setIsReadOnly] = useState<boolean>(true);
+  const [requestValue, setRequestValue] = useState<AdvertisementDataType>({
+    ...advertisement,
+  });
+  const { patchAdvertisements } = useAdvertisementModel();
 
   const titleRef = useRef<HTMLInputElement>(null);
 
@@ -24,7 +36,55 @@ const ManagementForm = ({ advertisement, isNewForm }: ManagementFormProps) => {
     }));
   };
 
-  console.log(requestValue);
+  const onChangeCalendar = (name: string, value: string) => {
+    setRequestValue((prevInput) => ({
+      ...prevInput,
+      [name]: value,
+    }));
+  };
+
+  const clickedEditAndCacnelButton = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
+    setIsReadOnly((prevState) => !prevState);
+  };
+
+  const getNumberWithoutPercent = (strValue: string | number): number => {
+    return Number(String(strValue).split(' ')[0]);
+  };
+
+  const clickedEditCompleteButton = async (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
+
+    // 데이터 가공 필요
+    const requestData: AdvertisementUpdateDataType = {
+      id: Number(requestValue.id),
+      title: String(requestValue.title),
+      status: MANAGEMENT_STATUS_KOR_TO_ENG[requestValue.status],
+      budget: Number(requestValue.budget),
+      startDate: String(requestValue.startDate),
+      report: {
+        cost: Number(requestValue.cost),
+        convValue: Number(requestValue.convValue),
+        roas: getNumberWithoutPercent(requestValue.roas),
+      },
+    };
+    try {
+      await patchAdvertisements<AdvertisementUpdateDataType>(
+        requestData.id,
+        requestData
+      );
+      alert(MSG_UPDATE_COMPLETE);
+    } catch (error) {
+      alert(MSG_UPDATE_FAILED);
+    }
+
+    setIsReadOnly((prevState) => !prevState);
+  };
+
   return (
     <Form>
       <FormTitle>
@@ -35,30 +95,68 @@ const ManagementForm = ({ advertisement, isNewForm }: ManagementFormProps) => {
           placeholder="광고 제목"
           autoFocus={isNewForm}
           name="title"
+          readOnly={isReadOnly}
         />
       </FormTitle>
-      {Object.keys(MANAGEMENT_INPUT_TITLE).map((inputName, i) => {
+      {Object.keys(MANAGEMENT_INPUT_TITLE).map((inputName, index) => {
         let title = MANAGEMENT_INPUT_TITLE[inputName];
-        let value = !isNewForm && advertisement ? advertisement[inputName] : '';
+        let value =
+          !isNewForm && requestValue ? String(requestValue[inputName]) : '';
 
         if (typeof value === 'number' && value > 10000)
           value = `${getCommaLocalString(Math.round(value / 10000))} 만원`;
         if (typeof value === 'number' && value < 10000)
           value = `${getCommaLocalString(Math.round(value))} 원`;
 
+        if (inputName === 'startDate') {
+          return (
+            <CalendarInput
+              key={index}
+              title={title}
+              date={value}
+              disabled={isReadOnly}
+              inputName={inputName}
+              onChangeCalendar={onChangeCalendar}
+            />
+          );
+        }
+
         return (
           <ManagementInput
-            key={i}
+            key={index}
             title={title}
-            value={value as string}
+            value={value}
             inputName={inputName}
             onChangeInput={onChangeInput}
+            isReadOnly={isReadOnly}
           />
         );
       })}
 
       <ButtonWrapper>
-        <EditButton>수정하기</EditButton>
+        {isReadOnly ? (
+          <EditButton
+            onClick={clickedEditAndCacnelButton}
+            buttonType={BUTTON_TYPE.EDIT}
+          >
+            수정하기
+          </EditButton>
+        ) : (
+          <>
+            <EditButton
+              onClick={clickedEditCompleteButton}
+              buttonType={BUTTON_TYPE.COMPLETE}
+            >
+              수정완료
+            </EditButton>
+            <EditButton
+              onClick={clickedEditAndCacnelButton}
+              buttonType={BUTTON_TYPE.CANCEL}
+            >
+              수정취소
+            </EditButton>
+          </>
+        )}
       </ButtonWrapper>
     </Form>
   );
@@ -90,11 +188,21 @@ const ButtonWrapper = styled.div`
   padding: 30px 0px 30px 0px;
 `;
 
-const EditButton = styled.button`
+const EditButton = styled.button<{ buttonType: string }>`
   padding: 10px 20px 10px 20px;
-  background-color: ${({ theme }) => theme.color.background.white};
+  background-color: ${({ theme, buttonType }) => {
+    switch (buttonType) {
+      case BUTTON_TYPE.EDIT:
+        return theme.color.background.white;
+      case BUTTON_TYPE.COMPLETE:
+        return theme.color.button.blue;
+      case BUTTON_TYPE.CANCEL:
+        return theme.color.button.red;
+    }
+  }};
   border: 1px solid ${({ theme }) => theme.color.border.lightgray};
   border-radius: 10px;
   font-weight: bold;
   font-size: 16px;
+  margin-right: 1rem;
 `;

@@ -1,4 +1,4 @@
-import React, { useState, memo } from 'react';
+import React, { memo } from 'react';
 import styled from 'styled-components';
 
 interface ManagementInputProps {
@@ -6,6 +6,7 @@ interface ManagementInputProps {
   value: string;
   inputName: string;
   onChangeInput: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  isReadOnly: boolean;
 }
 
 const ManagementInput = ({
@@ -13,18 +14,18 @@ const ManagementInput = ({
   value,
   inputName,
   onChangeInput,
+  isReadOnly,
 }: ManagementInputProps) => {
-  const [inputValue, setInputValue] = useState(value);
-
   return (
     <InputWrapper>
       <Label>{title}</Label>
       <InputContainer>
         <Input
           type="text"
-          value={inputValue}
+          value={value}
           onChange={onChangeInput}
           name={inputName}
+          readOnly={isReadOnly}
         />
       </InputContainer>
     </InputWrapper>

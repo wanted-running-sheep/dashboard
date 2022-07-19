@@ -25,6 +25,8 @@ const color = {
   },
   button: {
     lightblue: '#7282F3',
+    red: '#EA8F99',
+    blue: '#BBC8F3',
   },
 };
 
