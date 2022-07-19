@@ -13,6 +13,16 @@ export const useAdvertisementModel = () => {
       setAdvertisements(response.data);
     }
   };
+
+  const postAdvertisement = async (data: AdvertisementInterface) => {
+    try {
+      await apiRequest.post('/advertisements', data);
+      getAdvertisements();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const getAdvertisements = async () => {
     const response = await apiRequest.get('/advertisements');
     updateAdvertisements(response);
@@ -21,5 +31,6 @@ export const useAdvertisementModel = () => {
   return {
     advertisements,
     getAdvertisements,
+    postAdvertisement,
   };
 };

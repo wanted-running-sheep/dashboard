@@ -12,6 +12,7 @@ import ManagementInput from './ManagementInput';
 import adsFormValidate from '@/utils/adsFormValidate';
 import { AdvertisementInterface } from 'request';
 import { format } from 'date-fns';
+import { useAdvertisementModel } from '@/api/models/useAdvertisementModel';
 
 interface ManagementFormProps {
   advertisement?: { [key: string]: string | number };
@@ -19,6 +20,7 @@ interface ManagementFormProps {
 }
 const ManagementForm = ({ advertisement, newId }: ManagementFormProps) => {
   const isNewForm = !advertisement;
+  const { postAdvertisement } = useAdvertisementModel();
   const [requestValue, setRequestValue] = useState<{
     [key: string]: string | number;
   }>({});
@@ -41,7 +43,7 @@ const ManagementForm = ({ advertisement, newId }: ManagementFormProps) => {
       title: reqData.title as string,
       budget: reqData.budget as number,
       status: 'active',
-      startDate: format(new Date(), 'yyyy-MM-dd'),
+      startDate: format(new Date(reqData.startDate), 'yyyy-MM-dd'),
       endDate: '2022-08-01',
       report: {
         cost: reqData.cost as number,
@@ -62,8 +64,8 @@ const ManagementForm = ({ advertisement, newId }: ManagementFormProps) => {
     }
 
     if (isNewForm && newId) {
-      const data = setPostReqVal(requestValue, newId);
-      console.log(data);
+      const postData = setPostReqVal(requestValue, newId);
+      postAdvertisement(postData);
     }
   };
 
