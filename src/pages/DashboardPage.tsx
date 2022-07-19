@@ -29,7 +29,7 @@ const DashboardPage = () => {
         />
       </Title>
       <AdvertisingStatus data={totalWeeklyData[selectedDate].reports} />
-      <MediaStatus />
+      <MediaStatus data={totalWeeklyData[selectedDate].media} />
     </>
   );
 };
