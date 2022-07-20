@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-import { formattedMediaInterface } from 'media';
+import { FormattedMediaInterface } from 'media';
 import { MEDIA_COLUMN_KOREAN, MEDIA_SOCIAL_KOREAN } from '@/constants/media';
 
 interface MediaStatusTableProps {
-  allMedia: formattedMediaInterface[] | undefined;
+  allMedia: FormattedMediaInterface[] | undefined;
 }
 const MediaStatusTable = ({ allMedia }: MediaStatusTableProps) => {
   return (

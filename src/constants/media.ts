@@ -1,4 +1,4 @@
-import { socialTitleType } from 'media';
+import { SocialTitleType } from 'media';
 
 export const MEDIA_COLUMN_KOREAN = {
   cost: '광고비',
@@ -13,7 +13,7 @@ export const MEDIA_COLUMN_KOREAN = {
   roas: 'ROAS',
 };
 
-export const MEDIA_SOCIAL_KOREAN: socialTitleType[] = [
+export const MEDIA_SOCIAL_KOREAN: SocialTitleType[] = [
   '구글',
   '네이버',
   '카카오',

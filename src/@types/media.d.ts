@@ -1,5 +1,5 @@
 declare module 'media' {
-  type mediaTitleType =
+  type MediaTitleType =
     | 'imp'
     | 'click'
     | 'cost'
@@ -10,7 +10,8 @@ declare module 'media' {
     | 'cpa'
     | 'roas'
     | 'gross'; //매출
-  type mediaTitleKoreanType =
+
+  type MediaTitleKoreanType =
     | '노출 수'
     | '클릭 수'
     | '광고비'
@@ -21,15 +22,15 @@ declare module 'media' {
     | '전환 단가 (CPA)'
     | 'ROAS'
     | '매출';
-  type socialTitleType = '페이스북' | '네이버' | '구글' | '카카오';
+  type SocialTitleType = '페이스북' | '네이버' | '구글' | '카카오';
 
-  interface socialInterface {
+  interface SocialInterface {
     카카오: number | string;
     구글: number | string;
     네이버: number | string;
     페이스북: number | string;
   }
-  interface formattedMediaInterface extends socialInterface {
-    name: mediaTitleKoreanType;
+  interface FormattedMediaInterface extends SocialInterface {
+    name: MediaTitleKoreanType;
   }
 }

@@ -1,9 +1,9 @@
 import { useState, useCallback } from 'react';
 import { MediaInterface } from 'request';
 import {
-  mediaTitleType,
-  formattedMediaInterface,
-  mediaTitleKoreanType,
+  MediaTitleType,
+  FormattedMediaInterface,
+  MediaTitleKoreanType,
 } from 'media';
 
 import putCommaIntoNumber from '@/utils/putCommaIntoNumber';
@@ -34,7 +34,7 @@ const useFormattedMedia = (weeklyMedia: MediaInterface[]) => {
   // 일부 채널 데이터에서 title에 맞는 데이터만 전체 합 구하기
   // (ex: 유튜브 데이터에서 imp 데이터 전체 합 구하기)
   const reduceByFilteredMedia = useCallback(
-    (channel: string, title: mediaTitleType) => {
+    (channel: string, title: MediaTitleType) => {
       return filterByChannel(channel).reduce((acc, cur) => {
         if (title === 'gross')
           return (acc += (cur.roas * cur.cost) / PERCENTAGE);
@@ -46,7 +46,7 @@ const useFormattedMedia = (weeklyMedia: MediaInterface[]) => {
 
   // 각 채널, 각 컬럼별로 합계를 구하고 type 별로 데이터 포맷을 변경하여 넘기기
   const sumMediaByTitle = useCallback(
-    (title: mediaTitleType, type: callType) => {
+    (title: MediaTitleType, type: callType) => {
       const kakaoSummary = reduceByFilteredMedia('kakao', title);
       const googleSummary = reduceByFilteredMedia('google', title);
       const naverSummary = reduceByFilteredMedia('naver', title);
@@ -56,7 +56,7 @@ const useFormattedMedia = (weeklyMedia: MediaInterface[]) => {
         kakaoSummary + googleSummary + naverSummary + facebookSummary;
       const koreanColumnName = MEDIA_COLUMN_KOREAN[
         title
-      ] as mediaTitleKoreanType;
+      ] as MediaTitleKoreanType;
 
       if (type === 'all') {
         return {
@@ -93,7 +93,7 @@ const useFormattedMedia = (weeklyMedia: MediaInterface[]) => {
   // type 값에 따라 계산될 컬럼 설정하기
   const formatMediaData = useCallback(
     (type: callType) => {
-      const titles: mediaTitleType[] = [
+      const titles: MediaTitleType[] = [
         'cost',
         'imp',
         'click',
@@ -103,7 +103,7 @@ const useFormattedMedia = (weeklyMedia: MediaInterface[]) => {
       if (type === 'all') {
         titles.push('ctr', 'cvr', 'cpc', 'cpa', 'roas');
       }
-      const graphSummary: formattedMediaInterface[] = titles.map((title) => {
+      const graphSummary: FormattedMediaInterface[] = titles.map((title) => {
         return sumMediaByTitle(title, type);
       });
 

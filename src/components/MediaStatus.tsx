@@ -10,23 +10,21 @@ import {
   Legend,
 } from 'recharts';
 import { MediaInterface } from 'request';
-import { formattedMediaInterface, socialTitleType } from 'media';
+import { FormattedMediaInterface } from 'media';
 
 import MediaStatusTable from '@/components/MediaStatusTable';
 import Report from '@/components/Report';
 import useFormattedMedia from '@/hooks/useFormattedMedia';
-import { MEDIA_COLUMN_KOREAN, MEDIA_SOCIAL_KOREAN } from '@/constants/media';
+import { MEDIA_SOCIAL_KOREAN } from '@/constants/media';
 
 interface MediaStatusProps {
   data: MediaInterface[];
 }
 
-// TODO - 커스텀 툴팁으로 합계 보이도록 수정하기
-
 const MediaStatus = ({ data }: MediaStatusProps) => {
   const [formattedMedia, setFormattedMedia] =
-    useState<formattedMediaInterface[]>();
-  const [allMedia, setAllMedia] = useState<formattedMediaInterface[]>();
+    useState<FormattedMediaInterface[]>();
+  const [allMedia, setAllMedia] = useState<FormattedMediaInterface[]>();
   const { formatMediaData } = useFormattedMedia(data);
 
   useEffect(() => {
