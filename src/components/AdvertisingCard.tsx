@@ -24,6 +24,7 @@ const Wrapper = styled.div`
 
   ${({ theme }) => theme.media.tablet`
     width: 32%;
+    padding: 10px 5px;
   `}
 
   p {
@@ -45,5 +46,8 @@ const Wrapper = styled.div`
     ${({ theme }) => theme.media.mobile`
       font-size: 15px;
     `}
+    @media screen and (max-width: 380px) {
+      font-size: 13px;
+    }
   }
 `;

@@ -9,7 +9,8 @@
 
 <br/>
 
-[🌍 배포 링크](https://github.com/wanted-running-sheep/dashboard)
+## [🌍 배포 링크](https://dasheep-board.herokuapp.com/)
+저희의 결과물을 확인해보세요!
 
 <br />
 

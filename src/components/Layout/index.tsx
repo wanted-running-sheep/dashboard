@@ -35,8 +35,8 @@ const Content = styled.section<{ isOpened: boolean }>`
   width: ${({ isOpened }) => (isOpened ? 'calc(100% - 180px)' : '100%')};
 
   ${({ theme, isOpened }) => theme.media.mobile`
-    padding: 0px 10px;
-    width: ${isOpened ? 'calc(100% - 67px)' : '100%'};
+    padding: 0px 7px;
+    width: ${isOpened ? 'calc(100% - 60px)' : '100%'};
   `}
 `;
 const Article = styled.article`

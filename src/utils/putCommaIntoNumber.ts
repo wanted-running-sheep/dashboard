@@ -9,7 +9,7 @@ const putCommaIntoNumber = ({
   decimalPoint = 0,
   unit = '',
 }: PutCommaIntoNumberProps): string => {
-  const regex = /\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g;
+  const regex = /\B(?=(\d{3})+(?!\d))/g;
   const floatNumber = parseFloat(number.toFixed(decimalPoint)) + '';
   return `${floatNumber.replace(regex, ',')}${unit}`;
 };
