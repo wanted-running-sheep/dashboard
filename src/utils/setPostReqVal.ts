@@ -1,12 +1,8 @@
 import { format } from 'date-fns';
-import { AdvertisementInterface } from 'request';
+import { AdvertisementWithoutIdType } from 'request';
 
-const setPostReqVal = (
-  reqData: { [key: string]: string | number },
-  newId: number
-) => {
-  const postReqVal: AdvertisementInterface = {
-    id: newId,
+const setPostReqVal = (reqData: { [key: string]: string | number }) => {
+  const postReqVal: AdvertisementWithoutIdType = {
     adType: 'web',
     title: reqData.title as string,
     budget: reqData.budget as number,

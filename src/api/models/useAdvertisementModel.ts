@@ -14,7 +14,7 @@ export const useAdvertisementModel = () => {
     }
   };
 
-  const postAdvertisement = async (data: AdvertisementInterface) => {
+  const postAdvertisement = async <T>(data: T) => {
     try {
       await apiRequest.post('/advertisements', data);
     } catch (error) {

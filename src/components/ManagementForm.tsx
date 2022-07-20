@@ -1,7 +1,6 @@
-import React, { ChangeEvent, FormEvent, useState } from 'react';
+import React, { ChangeEvent, FormEvent } from 'react';
 import {
   BUTTON_TYPE,
-  DEFAULT_DATE_FORMAT,
   MANAGEMENT_INPUT_TITLE,
   MANAGEMENT_STATUS,
   MANAGEMENT_STATUS_KOR_TO_ENG,
@@ -11,49 +10,38 @@ import {
 import styled from 'styled-components';
 import ManagementInput from './ManagementInput';
 import CalendarInput from './CalendarInput';
-import { useAdvertisementModel } from '@/api/models/useAdvertisementModel';
 import { AdvertisementDataType, AdvertisementUpdateDataType } from 'request';
 import adsFormValidate from '@/utils/adsFormValidate';
-import { AdvertisementInterface } from 'request';
 import setPostReqVal from '@/utils/setPostReqVal';
 import makeViewData, { checkNumberVale } from '@/utils/makeViewData';
 import { format } from 'date-fns';
 import Dropdown from './Dropdown';
+import useManagement from '@/hooks/useManagement';
+import ManagementButton from './ManagementButton';
 
 interface ManagementFormProps {
   advertisement?: AdvertisementDataType;
-  nextId?: number;
   setIsNewForm?: React.Dispatch<React.SetStateAction<boolean>>;
-  setAdvertisementList?: React.Dispatch<
-    React.SetStateAction<AdvertisementInterface[]>
-  >;
-  setAdvertisementsForRender?: React.Dispatch<
-    React.SetStateAction<AdvertisementInterface[]>
-  >;
+  getAdvertisements: () => Promise<void>;
 }
 
 const ManagementForm = ({
   advertisement,
-  nextId,
   setIsNewForm,
-  setAdvertisementList,
-  setAdvertisementsForRender,
+  getAdvertisements,
 }: ManagementFormProps) => {
-  const isNewForm = !advertisement;
+  const {
+    isNewForm,
+    requestValue,
+    postAdvertisement,
+    setRequestValue,
+    setIsReadOnly,
+    patchAdvertisements,
+    isReadOnly,
+    createReqData,
+  } = useManagement(advertisement);
 
-  const { postAdvertisement } = useAdvertisementModel();
-  const [isReadOnly, setIsReadOnly] = useState<boolean>(true);
-  const [requestValue, setRequestValue] = useState<AdvertisementDataType>({
-    ...advertisement,
-    status: isNewForm ? 'active' : advertisement.status,
-    startDate: isNewForm
-      ? format(new Date(), DEFAULT_DATE_FORMAT)
-      : advertisement.startDate,
-  });
-
-  const { patchAdvertisements } = useAdvertisementModel();
-
-  const onNewFormSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const onNewFormSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const { notValidationTitle, validation } = adsFormValidate(requestValue);
     const VALIDATION_MESSAGE = `${notValidationTitle}값 은 필수 입력 값 입니다.`;
@@ -62,19 +50,10 @@ const ManagementForm = ({
       return;
     }
 
-    if (
-      isNewForm &&
-      nextId &&
-      setIsNewForm &&
-      setAdvertisementList &&
-      setAdvertisementsForRender
-    ) {
-      const postData = setPostReqVal(requestValue, nextId);
-      postAdvertisement(postData);
-      setAdvertisementList((prevAds) => [...prevAds, postData]);
-      setAdvertisementsForRender((prevAds) => [...prevAds, postData]);
-      setIsNewForm((prevIsNewForm) => !prevIsNewForm);
-    }
+    const postData = setPostReqVal(requestValue);
+    await postAdvertisement(postData);
+    await getAdvertisements();
+    setIsNewForm && setIsNewForm((prevIsNewForm) => !prevIsNewForm);
   };
 
   const onChangeInput = (
@@ -82,7 +61,6 @@ const ManagementForm = ({
   ) => {
     let { value, name } = event.target;
 
-    console.log(name, value);
     if (checkNumberVale(name)) {
       value = value.replace(/[^0-9]/g, '');
     }
@@ -109,37 +87,21 @@ const ManagementForm = ({
     });
   };
 
-  const getNumberWithoutPercent = (strValue: string | number): number => {
-    return Number(String(strValue).split(' ')[0]);
-  };
-
   const clickedEditCompleteButton = async (
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
     event.preventDefault();
-    // 데이터 가공 필요
-    const requestData: AdvertisementUpdateDataType = {
-      id: Number(requestValue.id),
-      title: String(requestValue.title),
-      status: String(requestValue.status),
-      budget: Number(requestValue.budget),
-      startDate: String(requestValue.startDate),
-      report: {
-        cost: Number(requestValue.cost),
-        convValue: Number(requestValue.convValue),
-        roas: getNumberWithoutPercent(requestValue.roas),
-      },
-    };
+    const requestData: AdvertisementUpdateDataType = createReqData();
     try {
       await patchAdvertisements<AdvertisementUpdateDataType>(
         requestData.id,
         requestData
       );
+      await getAdvertisements();
       alert(MSG_UPDATE_COMPLETE);
     } catch (error) {
       alert(MSG_UPDATE_FAILED);
     }
-
     setIsReadOnly((prevState) => !prevState);
   };
 
@@ -147,7 +109,7 @@ const ManagementForm = ({
     <Form onSubmit={onNewFormSubmit}>
       <FormTitle>
         <Input
-          value={isNewForm ? requestValue.title : advertisement.title}
+          value={requestValue.title || ''}
           onChange={onChangeInput}
           placeholder="광고 제목"
           autoFocus={isNewForm}
@@ -156,7 +118,7 @@ const ManagementForm = ({
         />
       </FormTitle>
       {Object.keys(MANAGEMENT_INPUT_TITLE).map((inputName) => {
-        const { title, value, onlyNumber } = makeViewData({
+        const { title, value } = makeViewData({
           inputName,
           advertisement,
           isReadOnly,
@@ -206,35 +168,12 @@ const ManagementForm = ({
         );
       })}
 
-      <ButtonWrapper>
-        {isNewForm ? (
-          <EditButton type="submit" buttonType={BUTTON_TYPE.EDIT}>
-            만들기
-          </EditButton>
-        ) : isReadOnly ? (
-          <EditButton
-            onClick={clickedEditAndCacnelButton}
-            buttonType={BUTTON_TYPE.EDIT}
-          >
-            수정하기
-          </EditButton>
-        ) : (
-          <>
-            <EditButton
-              onClick={clickedEditCompleteButton}
-              buttonType={BUTTON_TYPE.COMPLETE}
-            >
-              수정완료
-            </EditButton>
-            <EditButton
-              onClick={clickedEditAndCacnelButton}
-              buttonType={BUTTON_TYPE.CANCEL}
-            >
-              수정취소
-            </EditButton>
-          </>
-        )}
-      </ButtonWrapper>
+      <ManagementButton
+        isNewForm={isNewForm}
+        isReadOnly={isReadOnly}
+        clickedEditAndCacnelButton={clickedEditAndCacnelButton}
+        clickedEditCompleteButton={clickedEditCompleteButton}
+      />
     </Form>
   );
 };

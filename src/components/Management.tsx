@@ -1,22 +1,17 @@
-import React, { ChangeEvent, useRef, useState } from 'react';
-import { AdvertisementInterface } from 'request';
+import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { AdvertismentStatusType } from 'request';
 import styled from 'styled-components';
 import ManagementForm from './ManagementForm';
 import ManagementHeader from './ManagementHeader';
 import makePropsAdvertisement from '@/utils/makePropsAdvertisement';
-import getNewId from '@/utils/getNewId';
+import { useAdvertisementModel } from '@/api/models/useAdvertisementModel';
+import createRenderAds from '@/utils/createRenderAds';
 
-interface ManagementProps {
-  advertisements: AdvertisementInterface[];
-}
-
-const Management = ({ advertisements }: ManagementProps) => {
+const Management = () => {
+  const { advertisements, getAdvertisements } = useAdvertisementModel();
   const [isNewForm, setIsNewForm] = useState(false);
-  const [advertisementList, setAdvertisementList] = useState(advertisements);
-  const [advertisementsForRender, setAdvertisementsForRender] =
-    useState<AdvertisementInterface[]>(advertisements);
-  const nextId = getNewId(advertisements);
-
+  const [advertisementsStatus, setAdvertisementsStatus] =
+    useState<AdvertismentStatusType>('all');
   const formContainerRef = useRef<HTMLDivElement>(null);
 
   const onClickNewForm = () => {
@@ -26,17 +21,14 @@ const Management = ({ advertisements }: ManagementProps) => {
 
   const onChangeStatus = (event: ChangeEvent<HTMLSelectElement>) => {
     const { value } = event.target;
-    if (value === 'all') {
-      setAdvertisementsForRender([...advertisementList]);
-      return;
-    }
-
-    setAdvertisementsForRender(
-      advertisementList.filter(
-        (advertisement) => advertisement.status === value
-      )
-    );
+    setAdvertisementsStatus(value as AdvertismentStatusType);
   };
+
+  useEffect(() => {
+    getAdvertisements();
+  }, []);
+
+  if (!advertisements.length) return null;
 
   return (
     <Wrapper>
@@ -49,19 +41,18 @@ const Management = ({ advertisements }: ManagementProps) => {
       <FormContainer ref={formContainerRef}>
         {isNewForm && (
           <ManagementForm
-            nextId={nextId}
             setIsNewForm={setIsNewForm}
-            setAdvertisementList={setAdvertisementList}
-            setAdvertisementsForRender={setAdvertisementsForRender}
+            getAdvertisements={getAdvertisements}
           />
         )}
-        {advertisementsForRender
+        {createRenderAds(advertisements, advertisementsStatus)
           .sort((a, b) => b.id - a.id)
           .map((advertisement) => {
             return (
               <ManagementForm
                 key={advertisement.id}
                 advertisement={makePropsAdvertisement(advertisement)}
+                getAdvertisements={getAdvertisements}
               />
             );
           })}

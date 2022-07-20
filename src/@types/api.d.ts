@@ -3,6 +3,7 @@ declare module 'request' {
   type ApiDataType = 'Report' | 'Media';
   type CombineDataType = ReportInterface | MediaInterface;
 
+  type AdvertismentStatusType = 'all' | 'active' | 'ended';
   interface ReportInterface {
     dataType: ApiDataType;
     imp: number;
@@ -37,6 +38,8 @@ declare module 'request' {
     endDate: string | null;
     report: AdvertisementReportInterface;
   }
+
+  type AdvertisementWithoutIdType = Omit<AdvertisementInterface, 'id'>;
 
   interface MediaInterface {
     dataType: ApiDataType;

@@ -3,7 +3,6 @@ import { AdvertisementDataType } from 'request';
 import getCommaLocalString from './getCommaLocalString';
 
 type DefaultObjType = { [key: string]: string | number };
-export type InputType = 'text' | 'number';
 
 export const checkNumberVale = (inputName: string) => {
   return (
@@ -30,15 +29,9 @@ const makeViewData = ({
   isNewForm,
 }: MakeViewDataParams) => {
   let title = MANAGEMENT_INPUT_TITLE[inputName];
-  //let value = advertisement && advertisement[inputName];\
+
   let value: string | number = requestValue[inputName];
   let onlyNumber: boolean = false;
-
-  /* if (isReadOnly && advertisement) {
-    value = advertisement[inputName];
-  } else if (!isReadOnly && advertisement) {
-    value = requestValue[inputName];
-  } */
 
   if (checkNumberVale(inputName) && value && isReadOnly && !isNewForm) {
     value = Number(value);
