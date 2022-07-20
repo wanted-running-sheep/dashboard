@@ -5135,8 +5135,8 @@
       "startDate": "2022-06-10",
       "endDate": null,
       "report": {
-        "cost": 5555555555,
-        "convValue": 5555555555,
+        "cost": "500000000",
+        "convValue": "1600000",
         "roas": 555
       }
     },
@@ -5146,11 +5146,11 @@
       "title": "광고 12345",
       "budget": 200000,
       "status": "ended",
-      "startDate": "2021-01-22T00:00:00",
+      "startDate": "2021-01-22",
       "endDate": "2021-12-21T23:59:59",
       "report": {
-        "cost": 169837362,
-        "convValue": 745438798,
+        "cost": "1600000",
+        "convValue": "4000000",
         "roas": 438
       }
     },
@@ -5158,111 +5158,42 @@
       "id": 3,
       "adType": "web",
       "title": "원티드 광고 1234",
-      "budget": 111111111,
+      "budget": "1111000",
       "status": "ended",
       "startDate": "2022-01-19",
       "endDate": null,
       "report": {
         "cost": 3232323,
-        "convValue": 3232323,
+        "convValue": "300000000000",
         "roas": 30
       }
     },
     {
       "id": 4,
       "adType": "app",
-      "title": "광고 9912",
-      "budget": 240000,
-      "status": "active",
-      "startDate": "2022-02-10T00:00:00",
+      "title": "스프라이트",
+      "budget": "300000",
+      "status": "ended",
+      "startDate": "2022-02-09",
       "endDate": null,
       "report": {
-        "cost": 9300222,
-        "convValue": 38234789,
-        "roas": 411
+        "cost": "400000",
+        "convValue": "1834000",
+        "roas": 300
       }
     },
     {
       "id": 5,
       "adType": "web",
-      "title": "test광고yay~",
+      "title": "코카콜라",
       "budget": 111133,
-      "status": "ended",
+      "status": "active",
       "startDate": "2022-07-14",
       "endDate": "2022-07-22",
       "report": {
-        "cost": 4444,
-        "convValue": 66666,
+        "cost": "30000000",
+        "convValue": "674000000",
         "roas": 877
-      }
-    },
-    {
-      "id": 6,
-      "adType": "web",
-      "title": "제바랄ㄹ",
-      "budget": "1111111111",
-      "status": "ended",
-      "startDate": "2022-07-20",
-      "endDate": "2022-08-01",
-      "report": {
-        "cost": "1111111111",
-        "convValue": "1111111111",
-        "roas": "111"
-      }
-    },
-    {
-      "id": 7,
-      "adType": "web",
-      "title": "제발 좀 돼라",
-      "budget": "111111111111",
-      "status": "ended",
-      "startDate": "2022-07-20",
-      "endDate": "2022-08-01",
-      "report": {
-        "cost": "111111111111",
-        "convValue": "111111111111",
-        "roas": "111"
-      }
-    },
-    {
-      "id": 8,
-      "adType": "web",
-      "title": "제발 좀 돼라",
-      "budget": "2222222222",
-      "startDate": "2022-07-20",
-      "endDate": "2022-08-01",
-      "report": {
-        "cost": "2222222222",
-        "convValue": "2222222222",
-        "roas": "222"
-      }
-    },
-    {
-      "id": 9,
-      "adType": "web",
-      "title": "제발 좀 돼라돼라",
-      "budget": "232323232323",
-      "status": "active",
-      "startDate": "2022-07-20",
-      "endDate": "2022-08-01",
-      "report": {
-        "cost": "232323232323",
-        "convValue": "232323232323",
-        "roas": "23"
-      }
-    },
-    {
-      "id": 10,
-      "adType": "web",
-      "title": "제발 좀 돼라돼라돼라",
-      "budget": "3332323232323",
-      "status": "ended",
-      "startDate": "2022-07-22",
-      "endDate": "2022-08-01",
-      "report": {
-        "cost": "3333232323",
-        "convValue": "32323232323",
-        "roas": "2"
       }
     }
   ]

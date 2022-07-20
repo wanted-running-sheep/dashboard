@@ -215,30 +215,3 @@ const Input = styled.input`
   width: 100%;
   font-size: 16px;
 `;
-
-const ButtonWrapper = styled.div`
-  padding: 30px 0px 30px 0px;
-  ${({ theme }) => theme.media.mobile`
-    padding: 25px 0px 10px 0px;
-  `}
-`;
-
-const EditButton = styled.button<{ buttonType: string }>`
-  border: 1px solid ${({ theme }) => theme.color.border.lightgray};
-  border-radius: 10px;
-  font-size: 15px;
-  margin-right: 0.6rem;
-  padding: 10px 20px;
-  font-weight: 600;
-  background-color: ${({ theme, buttonType }) => {
-    switch (buttonType) {
-      case BUTTON_TYPE.EDIT:
-        return theme.color.button.black;
-      case BUTTON_TYPE.COMPLETE:
-        return theme.color.button.blue;
-      case BUTTON_TYPE.CANCEL:
-        return theme.color.button.red;
-    }
-  }};
-  color: ${({ theme }) => theme.color.font.white};
-`;

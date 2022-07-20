@@ -1,6 +1,8 @@
 import { MANAGEMENT_INPUT_TITLE, MANAGEMENT_STATUS } from '@/constants/index';
 import { AdvertisementDataType } from 'request';
 import getCommaLocalString from './getCommaLocalString';
+import putCommaIntoNumber from './putCommaIntoNumber';
+import formatMoney from '@/utils/formatMoney';
 
 type DefaultObjType = { [key: string]: string | number };
 
@@ -42,12 +44,8 @@ const makeViewData = ({
     value = MANAGEMENT_STATUS[value];
   }
 
-  if (typeof value === 'number' && value > 10000 && inputName !== 'roas') {
-    value = `${getCommaLocalString(Math.round(value / 10000))} 만원`;
-  }
-
-  if (typeof value === 'number' && value < 10000 && inputName !== 'roas') {
-    value = `${getCommaLocalString(Math.round(value))} 원`;
+  if (typeof value === 'number' && inputName !== 'roas') {
+    value = `${formatMoney(value)} 원`;
   }
 
   if (typeof value === 'number' && inputName === 'roas') {
