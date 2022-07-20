@@ -41,8 +41,8 @@ const Drawer = styled.nav<{ isOpened: boolean }>`
   display: ${({ isOpened }) => (isOpened ? 'block' : 'none')};
 
   ${({ theme }) => theme.media.mobile`
-    width: 67px;
-    padding: 20px 10px;
+    width: 60px;
+    padding: 20px 7px;
   `}
 `;
 const Title = styled.p`

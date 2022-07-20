@@ -23,7 +23,7 @@ interface MediaStatusProps {
 }
 
 const MediaStatus = ({ data }: MediaStatusProps) => {
-  const barSize = 28;
+  const barSize = 27;
   const socialColor = ['#F73B01', '#85DA47', '#F5D503', '#1774EB'];
   const [formattedMedia, setFormattedMedia] =
     useState<FormattedMediaInterface[]>();
@@ -76,7 +76,7 @@ const MediaStatus = ({ data }: MediaStatusProps) => {
           <YAxis
             ticks={[20, 40, 60, 80, 100]}
             domain={[0, 100]}
-            tickSize={40}
+            tickSize={20}
           />
           <Tooltip content={<CustomTooltip />} />
           <Legend />
