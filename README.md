@@ -8,8 +8,7 @@
 6. [프로젝트 설치 및 실행](#6-프로젝트-설치-및-실행)
 
 <br/>
-
-[🌍 배포 링크](https://github.com/wanted-running-sheep/dashboard)
+[🌍 배포 링크](https://dasheep-board.herokuapp.com/)
 
 <br />
 
