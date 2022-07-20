@@ -189,6 +189,9 @@ const Form = styled.form`
     width: 100%;
     padding: 10px 20px;
   `}
+  @media screen and (max-width: 380px) {
+    margin-bottom: 15px;
+  }
 `;
 
 const FormTitle = styled.div`
