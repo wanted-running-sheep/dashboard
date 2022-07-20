@@ -24,6 +24,7 @@ interface MediaStatusProps {
 
 const MediaStatus = ({ data }: MediaStatusProps) => {
   const barSize = 28;
+  const socialColor = ['#F73B01', '#85DA47', '#F5D503', '#1774EB'];
   const [formattedMedia, setFormattedMedia] =
     useState<FormattedMediaInterface[]>();
   const [allMedia, setAllMedia] = useState<FormattedMediaInterface[]>();
@@ -79,15 +80,17 @@ const MediaStatus = ({ data }: MediaStatusProps) => {
           />
           <Tooltip content={<CustomTooltip />} />
           <Legend />
-          <Bar
-            barSize={barSize}
-            dataKey="페이스북"
-            stackId="a"
-            fill="#1774EB"
-          />
-          <Bar barSize={barSize} dataKey="카카오" stackId="a" fill="#F5D503" />
-          <Bar barSize={barSize} dataKey="네이버" stackId="a" fill="#85DA47" />
-          <Bar barSize={barSize} dataKey="구글" stackId="a" fill="#F73B01" />
+          {MEDIA_SOCIAL_KOREAN.map((social, index) => {
+            return (
+              <Bar
+                key={index}
+                barSize={barSize}
+                dataKey={social}
+                stackId="a"
+                fill={socialColor[index]}
+              />
+            );
+          })}
         </BarChart>
       </ResponsiveContainer>
       <MediaStatusTable allMedia={allMedia} />

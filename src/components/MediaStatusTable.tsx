@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import { FormattedMediaInterface } from 'media';
+import { MEDIA_SOCIAL_KOREAN } from '@/constants/media';
 
 interface MediaStatusTableProps {
   allMedia: FormattedMediaInterface[] | undefined;
@@ -21,31 +22,16 @@ const MediaStatusTable = ({ allMedia }: MediaStatusTableProps) => {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>구글</td>
-                {allMedia.map(({ 구글 }, index) => (
-                  <td key={index}>{구글}</td>
-                ))}
-              </tr>
-              <tr>
-                <td>네이버</td>
-                {allMedia.map(({ 네이버 }, index) => (
-                  <td key={index}>{네이버}</td>
-                ))}
-              </tr>
-              <tr>
-                <td>카카오</td>
-                {allMedia.map(({ 카카오 }, index) => (
-                  <td key={index}>{카카오}</td>
-                ))}
-              </tr>
-
-              <tr>
-                <td>페이스북</td>
-                {allMedia.map(({ 페이스북 }, index) => (
-                  <td key={index}>{페이스북}</td>
-                ))}
-              </tr>
+              {MEDIA_SOCIAL_KOREAN.map((social, index) => {
+                return (
+                  <tr key={index}>
+                    <td>{social}</td>
+                    {allMedia.map((media, index) => (
+                      <td key={index}>{media[social]}</td>
+                    ))}
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </TableWrapper>
