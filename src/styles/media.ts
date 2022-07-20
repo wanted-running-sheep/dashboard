@@ -16,22 +16,22 @@ type BackQuoteArgs = string[];
 
 // literals로 css 속성 받아 CSSProp값으로 리턴한다.
 const media = {
-  mobile: (literals: TemplateStringsArray): CSSProp =>
+  mobile: (literals: TemplateStringsArray, ...args: BackQuoteArgs): CSSProp =>
     css`
       @media only screen and (max-width: ${sizes.mobile}px) {
-        ${css(literals)}
+        ${css(literals, ...args)}
       }
     `,
-  tablet: (literals: TemplateStringsArray): CSSProp =>
+  tablet: (literals: TemplateStringsArray, ...args: BackQuoteArgs): CSSProp =>
     css`
       @media only screen and (max-width: ${sizes.tablet}px) {
-        ${css(literals)}
+        ${css(literals, ...args)}
       }
     `,
-  desktop: (literals: TemplateStringsArray): CSSProp =>
+  desktop: (literals: TemplateStringsArray, ...args: BackQuoteArgs): CSSProp =>
     css`
       @media only screen and (max-width: ${sizes.desktop}px) {
-        ${css(literals)}
+        ${css(literals, ...args)}
       }
     `,
 } as Record<

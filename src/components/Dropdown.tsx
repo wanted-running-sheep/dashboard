@@ -41,6 +41,9 @@ export default Dropdown;
 
 const SelectList = styled.select`
   background: transparent;
-  font-size: 15px;
-  padding: 5px;
+  padding: 0px;
+  font-size: 17px;
+  ${({ theme }) => theme.media.mobile`
+    font-size: 14px;
+  `}
 `;

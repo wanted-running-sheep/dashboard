@@ -22,14 +22,28 @@ const Wrapper = styled.div`
   padding: 15px 10px;
   border-radius: 5px;
 
+  ${({ theme }) => theme.media.tablet`
+    width: 32%;
+  `}
+
   p {
     color: ${({ theme }) => theme.color.font.lightgray};
     font-size: 14px;
     margin-bottom: 5px;
+
+    ${({ theme }) => theme.media.tablet`
+      font-size: 12px;
+    `}
   }
   h1 {
     color: ${({ theme }) => theme.color.font.primary};
-    font-weight: 900;
-    font-size: 23px;
+    font-size: 20px;
+
+    ${({ theme }) => theme.media.tablet`
+      font-size: 17px;
+    `}
+    ${({ theme }) => theme.media.mobile`
+      font-size: 15px;
+    `}
   }
 `;

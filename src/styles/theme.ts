@@ -21,13 +21,14 @@ const color = {
     lightgray: '#AEB8C1',
   },
   border: {
-    lightgray: '#F6F7F8',
+    lightgray: '#e8e8e8',
     lightblue: '#7282F3',
   },
   button: {
+    black: '#000000',
     lightblue: '#7282F3',
-    red: '#EA8F99',
-    blue: '#BBC8F3',
+    red: '#F55859',
+    blue: '#1B91EA',
   },
 };
 

@@ -181,44 +181,64 @@ const ManagementForm = ({
 export default ManagementForm;
 
 const Form = styled.form`
-  padding: 10px 40px 10px 40px;
+  padding: 5px 30px;
   border: 1px solid ${({ theme }) => theme.color.border.lightgray};
   border-radius: 10px;
+
+  ${({ theme }) => theme.media.mobile`
+    width: 100%;
+    padding: 10px 20px;
+  `}
 `;
 
 const FormTitle = styled.div`
-  padding: 40px 0px 40px 0px;
+  padding: 30px 0px;
   font-weight: bold;
   font-size: 16px;
 
   border-bottom: 1px solid ${({ theme }) => theme.color.border.lightgray};
+  ${({ theme }) => theme.media.mobile`
+    padding: 20px 0px;
+  `}
+  & > input {
+    font-family: 'GothicA1-Medium', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+
+    ${({ theme }) => theme.media.mobile`
+      font-size: 18px;
+    `}
+  }
 `;
 
 const Input = styled.input`
   width: 100%;
   font-size: 16px;
-  font-weight: bold;
 `;
 
 const ButtonWrapper = styled.div`
   padding: 30px 0px 30px 0px;
+  ${({ theme }) => theme.media.mobile`
+    padding: 25px 0px 10px 0px;
+  `}
 `;
 
 const EditButton = styled.button<{ buttonType: string }>`
-  padding: 10px 20px 10px 20px;
+  border: 1px solid ${({ theme }) => theme.color.border.lightgray};
+  border-radius: 10px;
+  font-size: 15px;
+  margin-right: 0.6rem;
+  padding: 10px 20px;
+  font-weight: 600;
   background-color: ${({ theme, buttonType }) => {
     switch (buttonType) {
       case BUTTON_TYPE.EDIT:
-        return theme.color.background.white;
+        return theme.color.button.black;
       case BUTTON_TYPE.COMPLETE:
         return theme.color.button.blue;
       case BUTTON_TYPE.CANCEL:
         return theme.color.button.red;
     }
   }};
-  border: 1px solid ${({ theme }) => theme.color.border.lightgray};
-  border-radius: 10px;
-  font-weight: bold;
-  font-size: 16px;
-  margin-right: 1rem;
+  color: ${({ theme }) => theme.color.font.white};
 `;

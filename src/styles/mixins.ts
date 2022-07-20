@@ -15,6 +15,13 @@ const mixins = {
     left: 50%;
     transform: translate(-50%, -50%);
   `,
+  noScrollBar: () => `
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+    &::-webkit-scrollbar {
+      display: none; /* Chrome, Safari, Opera*/
+    }
+  `,
 };
 
 export default mixins;
