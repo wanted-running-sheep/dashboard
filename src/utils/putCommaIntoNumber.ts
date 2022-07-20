@@ -1,7 +1,7 @@
 interface PutCommaIntoNumberProps {
   number: number;
-  decimalPoint: number;
-  unit: string;
+  decimalPoint?: number;
+  unit?: string;
 }
 
 const putCommaIntoNumber = ({
@@ -10,7 +10,8 @@ const putCommaIntoNumber = ({
   unit = '',
 }: PutCommaIntoNumberProps): string => {
   const regex = /\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g;
-  return `${number.toFixed(decimalPoint).replace(regex, ',')}${unit}`;
+  const floatNumber = parseFloat(number.toFixed(decimalPoint)) + '';
+  return `${floatNumber.replace(regex, ',')}${unit}`;
 };
 
 export default putCommaIntoNumber;

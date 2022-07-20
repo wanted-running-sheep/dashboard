@@ -1,97 +1,48 @@
 import React, { useEffect, useState } from 'react';
-import { MediaInterface } from 'request';
 import styled from 'styled-components';
 
+import { FormattedMediaInterface } from 'media';
+
 interface MediaStatusTableProps {
-  data: MediaInterface[];
+  allMedia: FormattedMediaInterface[] | undefined;
 }
-
-//표시 데이터: 광고비, 매출, ROAS, 노출수, 클릭수, 클릭율(CTR), 클릭당비용(CPC), 전환율(CVR), 전환단가(CPA)
-type mediaTitles =
-  | 'cost'
-//  | 'gross' //매출액. gross = (roas * cost) / 100
-  | 'roas'
-  | 'imp'
-  | 'click'
-  | 'ctr'
-  | 'cpc'
-  | 'cvr'
-  | 'cpa';
-
-const MediaStatusTable = ({data}: MediaStatusTableProps) => {
-  const [media, setMedia] = useState<MediaInterface[]>(data);
-  const [tableData, setTableData] = useState<any[]>([]);
-  
-  const filterByChannel = (channel: string) => {
-    return media.filter((selected) => selected.channel === channel);
-  };
-
-  const sumData = (title: mediaTitles) => {
-    const kakaoSum = filterByChannel('kakao').reduce((acc, cur) => {
-      return (acc += cur[title]);
-    }, 0);
-    const googleSum = filterByChannel('google').reduce((acc, cur) => {
-      return (acc += cur[title]);
-    }, 0);
-    const naverSum = filterByChannel('naver').reduce((acc, cur) => {
-      return (acc += cur[title]);
-    }, 0);
-    const facebookSum = filterByChannel('facebook').reduce((acc, cur) => {
-      return (acc += cur[title]);
-    }, 0);
-    // const sum = kakaoSum + googleSum + naverSum + facebookSum;
-
-    return { title, kakaoSum, googleSum, naverSum, facebookSum };
-  };
-
-  const formatTableData = () => {
-    const formattedData:any[] = [];
-    formattedData.push(sumData('cost'));
-    formattedData.push(sumData('roas'));
-    formattedData.push(sumData('imp'));
-    formattedData.push(sumData('click'));
-    formattedData.push(sumData('ctr'));
-    formattedData.push(sumData('cpc'));
-    formattedData.push(sumData('cvr'));
-    formattedData.push(sumData('cpa'));
-    console.log(formattedData);
-    setTableData(formattedData);
-  }
-
-  useEffect(() => {
-    formatTableData();
-  },[JSON.stringify(data)]);
-  
+const MediaStatusTable = ({ allMedia }: MediaStatusTableProps) => {
   return (
     <>
-      {tableData.length !== 0 && (
+      {allMedia && (
         <Table>
           <thead>
             <tr>
-              {tableData.map(({title},i) => (
-                <th key={i}>{title}</th>
+              <td></td>
+              {allMedia.map(({ name }, index) => (
+                <th key={index}>{name}</th>
               ))}
             </tr>
           </thead>
           <tbody>
             <tr>
-              {tableData.map(({kakaoSum}, i) => (
-                <td key={i}>{kakaoSum}</td>
+              <td>구글</td>
+              {allMedia.map(({ 구글 }, index) => (
+                <td key={index}>{구글}</td>
               ))}
             </tr>
             <tr>
-              {tableData.map(({googleSum}, i) => (
-                <td key={i}>{googleSum}</td>
+              <td>네이버</td>
+              {allMedia.map(({ 네이버 }, index) => (
+                <td key={index}>{네이버}</td>
               ))}
             </tr>
             <tr>
-              {tableData.map(({naverSum}, i) => (
-                <td key={i}>{naverSum}</td>
+              <td>카카오</td>
+              {allMedia.map(({ 카카오 }, index) => (
+                <td key={index}>{카카오}</td>
               ))}
             </tr>
+
             <tr>
-              {tableData.map(({facebookSum}, i) => (
-                <td key={i}>{facebookSum}</td>
+              <td>페이스북</td>
+              {allMedia.map(({ 페이스북 }, index) => (
+                <td key={index}>{페이스북}</td>
               ))}
             </tr>
           </tbody>
@@ -99,7 +50,7 @@ const MediaStatusTable = ({data}: MediaStatusTableProps) => {
       )}
     </>
   );
-}
+};
 
 export default MediaStatusTable;
 
@@ -111,8 +62,13 @@ const Table = styled.table`
   tr {
     border-bottom: 2px solid ${({ theme }) => theme.color.border.lightgray};
   }
-  td, th {
+  th,
+  td:first-child {
     text-align: center;
-    padding: 10px 10px;
+    padding: 10px;
+  }
+  td {
+    text-align: right;
+    padding: 8px;
   }
 `;
