@@ -7,6 +7,7 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
+  ResponsiveContainer,
 } from 'recharts';
 import { MediaInterface } from 'request';
 
@@ -26,27 +27,29 @@ const MediaStatus = ({ data }: MediaStatusProps) => {
 
   return (
     <Report title="매체 현황">
-      <BarChart
-        width={1000}
-        height={300}
-        data={formattedMedia}
-        margin={{
-          top: 20,
-          right: 30,
-          left: 20,
-          bottom: 5,
-        }}
-      >
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="name" />
-        <YAxis />
-        <Tooltip />
-        <Legend />
-        <Bar dataKey="페이스북" stackId="a" fill="#1774EB" />
-        <Bar dataKey="네이버" stackId="a" fill="#85DA47" />
-        <Bar dataKey="카카오" stackId="a" fill="#F5D503" />
-        <Bar dataKey="구글" stackId="a" fill="#F73B01" />
-      </BarChart>
+      <ResponsiveContainer width="100%" height={300}>
+        <BarChart
+          width={1000}
+          height={300}
+          data={formattedMedia}
+          margin={{
+            top: 20,
+            right: 30,
+            left: 20,
+            bottom: 5,
+          }}
+        >
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="name" />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+          <Bar dataKey="페이스북" stackId="a" fill="#1774EB" />
+          <Bar dataKey="네이버" stackId="a" fill="#85DA47" />
+          <Bar dataKey="카카오" stackId="a" fill="#F5D503" />
+          <Bar dataKey="구글" stackId="a" fill="#F73B01" />
+        </BarChart>
+      </ResponsiveContainer>
     </Report>
   );
 };

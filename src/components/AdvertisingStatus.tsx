@@ -7,6 +7,7 @@ import {
   Tooltip,
   XAxis,
   YAxis,
+  ResponsiveContainer,
 } from 'recharts';
 import { ReportInterface } from 'request';
 import styled from 'styled-components';
@@ -28,15 +29,17 @@ const AdvertisingStatus = ({ data }: AdvertisingStatusProps) => {
           <AdvertisingCard key={index} title={title} summary={summary} />
         ))}
       </SummaryContainer>
-      <LineChart width={1000} height={250} data={data}>
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="monthDate" style={{ fontSize: '14px' }} />
-        <YAxis />
-        <Tooltip />
-        <Legend />
-        <Line type="monotone" dataKey="roas" stroke="#8884d8" />
-        <Line type="monotone" dataKey="click" stroke="#82ca9d" />
-      </LineChart>
+      <ResponsiveContainer width="100%" height={300}>
+        <LineChart data={data}>
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="monthDate" style={{ fontSize: '14px' }} />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+          <Line type="monotone" dataKey="roas" stroke="#8884d8" />
+          <Line type="monotone" dataKey="click" stroke="#82ca9d" />
+        </LineChart>
+      </ResponsiveContainer>
     </Report>
   );
 };
