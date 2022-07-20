@@ -53,4 +53,8 @@ const SummaryContainer = styled.div`
   flex-wrap: wrap;
   gap: 15px;
   margin-bottom: 30px;
+
+  ${({ theme }) => theme.media.tablet`
+    gap: 5px;
+  `}
 `;

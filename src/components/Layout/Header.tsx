@@ -35,6 +35,9 @@ const AppBar = styled.header`
   svg:hover {
     color: ${({ theme }) => theme.color.font.lightblue};
   }
+  ${({ theme }) => theme.media.tablet`
+    padding: 10px 5px;
+  `}
 `;
 const RightIconWrapper = styled.div`
   ${({ theme }) => theme.mixins.flexBox('center', 'space-between')}

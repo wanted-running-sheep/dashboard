@@ -12,7 +12,7 @@ const Layout = () => {
   return (
     <Wrapper>
       <NavigationBar isOpened={isOpened} />
-      <Content>
+      <Content isOpened={isOpened}>
         <Header toggleDrawer={toggleDrawer} />
         <Article>
           <Outlet />
@@ -29,14 +29,24 @@ const Wrapper = styled.main`
   width: 100vw;
   display: flex;
 `;
-const Content = styled.section`
-  width: 100%;
+const Content = styled.section<{ isOpened: boolean }>`
   background: ${({ theme }) => theme.color.background.lightgray};
   padding: 0px 20px;
+  width: ${({ isOpened }) => (isOpened ? 'calc(100% - 180px)' : '100%')};
+
+  ${({ theme, isOpened }) => theme.media.mobile`
+    padding: 0px 10px;
+    width: ${isOpened ? 'calc(100% - 67px)' : '100%'};
+  `}
 `;
 const Article = styled.article`
   box-sizing: border-box;
   padding: 20px;
   height: calc(100% - 55px);
   overflow-y: auto;
+  ${({ theme }) => theme.mixins.noScrollBar}
+
+  ${({ theme }) => theme.media.tablet`
+    padding: 7px;
+  `}
 `;

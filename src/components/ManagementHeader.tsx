@@ -37,6 +37,10 @@ const Wrapper = styled.div`
 
   padding: 10px 20px 10px 20px;
   position: sticky;
+
+  ${({ theme }) => theme.media.mobile`
+    padding: 5px;
+  `}
 `;
 
 const Button = styled.button`

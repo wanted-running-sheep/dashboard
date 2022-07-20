@@ -14,7 +14,9 @@ const NavigationBar = ({ isOpened }: NavigationBarProps) => {
 
   return (
     <Drawer isOpened={isOpened}>
-      <Title>광고센터</Title>
+      <Title>
+        광고<span>센터</span>
+      </Title>
       {navigationList.map(({ Icon, title, path }) => (
         <MenuWrapper
           key={title}
@@ -33,19 +35,27 @@ export default NavigationBar;
 
 const Drawer = styled.nav<{ isOpened: boolean }>`
   ${({ theme }) => theme.mixins.boxShadow()}
-  width: 230px;
+  width: 180px;
   height: 100%;
   padding: 20px 15px;
   display: ${({ isOpened }) => (isOpened ? 'block' : 'none')};
 
   ${({ theme }) => theme.media.mobile`
-    width: 90px;
+    width: 67px;
+    padding: 20px 10px;
   `}
 `;
 const Title = styled.p`
   font-size: 13px;
   color: ${({ theme }) => theme.color.font.lightgray};
-  margin-bottom: 7px;
+  margin-bottom: 12px;
+  line-height: 1.2em;
+  span {
+    display: inline-block;
+  }
+  ${({ theme }) => theme.media.mobile`
+      text-align: center;
+  `}
 `;
 const MenuWrapper = styled.div<{ menuIndex: number }>`
   display: flex;

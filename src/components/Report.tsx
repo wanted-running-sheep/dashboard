@@ -42,4 +42,8 @@ const Container = styled.div`
   width: 100%;
   padding: 20px;
   border-radius: 10px;
+
+  ${({ theme }) => theme.media.tablet`
+    padding: 20px 10px 15px 5px;
+  `}
 `;

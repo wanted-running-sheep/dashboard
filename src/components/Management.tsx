@@ -85,19 +85,26 @@ const Wrapper = styled.div`
   flex-direction: column;
 
   /* position: relative; */
+
+  ${({ theme }) => theme.media.mobile`
+    padding: 10px;
+  `}
 `;
 
 const FormContainer = styled.div`
-  padding: 10px 0px 10px 0px;
+  ${({ theme }) => theme.mixins.noScrollBar}
+  padding: 10px 7px;
+  width: 100%;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
-  overflow-y: scroll;
+  overflow-y: auto;
 
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+  @media screen and (max-width: 1420px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
 
-  &::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera*/
+  @media screen and (max-width: 1000px) {
+    grid-template-columns: repeat(1, 1fr);
   }
 `;
